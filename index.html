@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naoki Nakamura — Ski Jumper</title>
+<meta name="description" content="Official website of Naoki Nakamura, Japanese professional ski jumper competing on the FIS World Cup circuit. Sponsorship, media enquiries & collaborations.">
+<meta property="og:title" content="Naoki Nakamura — Ski Jumper">
+<meta property="og:description" content="Japanese National Team · FIS World Cup · Professional Ski Jumper competing across Europe">
+<meta property="og:image" content="images/hero_action.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@1bierbitte">
+<meta name="twitter:title" content="Naoki Nakamura — Ski Jumper">
+<meta name="twitter:description" content="Japanese National Team · FIS World Cup · Professional Ski Jumper">
+<meta name="twitter:image" content="images/hero_action.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #050608;
+    --white: #f0ede8;
+    --ice: #a8cfe0;
+    --dim: #8a8a8a;
+    --line: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--ice); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.15s ease; mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed; width: 32px; height: 32px;
+    border: 1px solid rgba(168,207,224,0.4); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transition: all 0.3s ease; transform: translate(-50%, -50%);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 28px 48px; display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(5,6,8,0.9), transparent);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
+    letter-spacing: 0.12em; color: var(--white); text-decoration: none; opacity: 0.9;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--dim); text-decoration: none; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none; background: none; border: none; cursor: pointer;
+    width: 32px; height: 24px; position: relative; z-index: 101;
+  }
+  .hamburger span {
+    display: block; width: 100%; height: 1.5px; background: var(--white);
+    position: absolute; left: 0; transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  .hamburger span:nth-child(1) { top: 0; }
+  .hamburger span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+  .hamburger span:nth-child(3) { bottom: 0; }
+  .hamburger.open span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+  .mobile-overlay {
+    display: none; position: fixed; inset: 0; z-index: 99;
+    background: var(--black); flex-direction: column;
+    align-items: center; justify-content: center; gap: 32px;
+  }
+  .mobile-overlay.open { display: flex; }
+  .mobile-overlay a {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem;
+    letter-spacing: 0.1em; color: var(--white); text-decoration: none;
+    opacity: 0.7; transition: opacity 0.3s, color 0.3s;
+  }
+  .mobile-overlay a:hover { opacity: 1; color: var(--ice); }
+
+  /* =============================================
+     HERO — 背景にアクション写真を入れる
+     hero-bg の background-image を変えるだけ！
+     ============================================= */
+  #hero {
+    position: relative; height: 100vh;
+    display: flex; align-items: flex-end;
+    padding: 0 48px 80px; overflow: hidden;
+  }
+  .hero-photo {
+    position: absolute; inset: 0;
+    /* ▼ ここをジャンプ中の写真に差し替え */
+    background-image: url('images/hero_action.jpg');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+  }
+  /* 写真がない間は背景グラデーション */
+  .hero-photo-placeholder {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 30%, rgba(168,207,224,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(168,207,224,0.04) 0%, transparent 60%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-photo-placeholder-text {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 12px 24px;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(5,6,8,0.85) 0%,
+      rgba(5,6,8,0.3) 50%,
+      rgba(5,6,8,0.1) 100%
+    );
+  }
+  .snow { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .flake {
+    position: absolute; width: 2px; height: 2px;
+    background: rgba(255,255,255,0.4); border-radius: 50%;
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+    10% { opacity: 1; } 90% { opacity: 0.3; }
+    100% { transform: translateY(100vh) translateX(40px); opacity: 0; }
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 760px; }
+  .hero-tag {
+    font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ice); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+  }
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 11rem); line-height: 0.9;
+    letter-spacing: 0.02em; opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+  }
+  .hero-name span { display: block; color: var(--ice); }
+  .hero-sub {
+    margin-top: 28px; font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 1.2rem; color: rgba(240,237,232,0.7); letter-spacing: 0.04em;
+    opacity: 0; animation: fadeUp 1s ease 0.7s forwards;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 80px; right: 48px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0; animation: fadeUp 1s ease 1s forwards;
+  }
+  .hero-scroll span {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--dim); writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--dim), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    50.01% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--line);
+  }
+  .stat-item {
+    padding: 40px 48px; border-right: 1px solid var(--line);
+    opacity: 0; transition: opacity 0.6s ease;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item.visible { opacity: 1; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+    line-height: 1; color: var(--ice); letter-spacing: 0.04em;
+  }
+  .stat-label {
+    margin-top: 6px; font-size: 0.68rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 48px; }
+  .section-header { display: flex; align-items: baseline; gap: 24px; margin-bottom: 64px; }
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem;
+    letter-spacing: 0.15em; color: var(--ice); opacity: 0.6;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.06em; line-height: 1;
+  }
+  .section-line { flex: 1; height: 1px; background: var(--line); margin-left: 12px; }
+
+  /* =============================================
+     ABOUT — 左に顔写真、右にテキスト＋詳細
+     ============================================= */
+  #about { border-bottom: 1px solid var(--line); }
+  .about-grid {
+    display: grid; grid-template-columns: 400px 1fr;
+    gap: 80px; align-items: start;
+  }
+  .about-photo-wrap {
+    position: relative;
+  }
+  .about-photo {
+    width: 100%; aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+    /* ▼ 写真を入れたら <img> タグのsrcを差し替え */
+  }
+  /* 写真がない間のプレースホルダー */
+  .about-photo-placeholder {
+    width: 100%; aspect-ratio: 3/4;
+    background: rgba(168,207,224,0.04);
+    border: 1px solid var(--line);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+  }
+  .about-photo-placeholder svg { opacity: 0.15; }
+  .about-photo-placeholder span {
+    font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--dim); opacity: 0.5;
+  }
+  .about-photo-accent {
+    position: absolute; bottom: -16px; right: -16px;
+    width: 80px; height: 80px;
+    border: 1px solid rgba(168,207,224,0.2);
+    pointer-events: none;
+  }
+  .about-right {
+    display: flex; flex-direction: column; gap: 40px; padding-top: 8px;
+  }
+  .about-text {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+    line-height: 1.7; color: rgba(240,237,232,0.85);
+  }
+  .about-details { display: flex; flex-direction: column; }
+  .detail-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+  }
+  .detail-row:first-child { border-top: 1px solid var(--line); }
+  .detail-key {
+    font-size: 0.68rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .detail-val { font-size: 0.9rem; color: var(--white); text-align: right; }
+
+  /* RESULTS */
+  #results { border-bottom: 1px solid var(--line); background: rgba(168,207,224,0.01); }
+  .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .result-card {
+    background: rgba(255,255,255,0.02); padding: 36px 32px;
+    border: 1px solid var(--line);
+    transition: background 0.3s, border-color 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .result-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 0; background: var(--ice); transition: height 0.4s ease;
+  }
+  .result-card:hover::before { height: 100%; }
+  .result-card:hover { background: rgba(168,207,224,0.04); border-color: rgba(168,207,224,0.2); }
+  .result-season {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ice); margin-bottom: 10px; opacity: 0.7;
+  }
+  .result-event { font-size: 1rem; font-weight: 500; margin-bottom: 6px; color: var(--white); }
+  .result-location { font-size: 0.8rem; color: var(--dim); margin-bottom: 16px; }
+  .result-rank {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem;
+    color: var(--ice); letter-spacing: 0.04em;
+  }
+
+  /* PROJECTS */
+  #projects { border-bottom: 1px solid var(--line); }
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .project-card {
+    position: relative; padding: 52px 48px; border: 1px solid var(--line);
+    overflow: hidden; transition: border-color 0.3s;
+    display: flex; flex-direction: column; min-height: 280px;
+  }
+  .project-card:hover { border-color: rgba(168,207,224,0.25); }
+  .project-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 120%, rgba(168,207,224,0.06) 0%, transparent 70%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-tag {
+    font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ice); margin-bottom: 16px; opacity: 0.7;
+  }
+  .project-name {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem;
+    letter-spacing: 0.08em; line-height: 1; margin-bottom: 16px;
+  }
+  .project-desc { font-size: 0.85rem; line-height: 1.7; color: var(--dim); flex: 1; }
+  .project-status {
+    margin-top: 28px; display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim);
+  }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); }
+  .status-dot.soon {
+    background: #e8c47a; box-shadow: 0 0 8px rgba(232,196,122,0.5);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* SPONSORS */
+  #sponsors { border-bottom: 1px solid var(--line); }
+  .sponsors-wrap { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); }
+  .sponsor-item {
+    flex: 1; min-width: 220px; padding: 56px 48px;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;
+    transition: background 0.3s;
+  }
+  .sponsor-item:last-child { border-right: none; }
+  .sponsor-item:hover { background: rgba(255,255,255,0.02); }
+  .sponsor-logo {
+    max-width: 160px; max-height: 56px; width: auto; height: auto;
+    object-fit: contain; filter: brightness(0) invert(1);
+    opacity: 0.7; transition: opacity 0.3s;
+  }
+  .sponsor-item:hover .sponsor-logo { opacity: 0.95; }
+  .sponsor-cat { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+
+  /* CONTACT */
+  #contact {
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(168,207,224,0.04) 0%, transparent 70%);
+  }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .contact-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: 0.04em;
+  }
+  .contact-heading span { color: var(--ice); }
+  .contact-tagline {
+    margin-top: 28px; font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 1.1rem; color: var(--dim); line-height: 1.7;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 0; margin-top: 24px; }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0; border-bottom: 1px solid var(--line);
+    text-decoration: none; color: var(--white); font-size: 0.9rem;
+    letter-spacing: 0.06em; transition: padding-left 0.3s ease, color 0.3s;
+  }
+  .contact-link:first-child { border-top: 1px solid var(--line); }
+  .contact-link:hover { padding-left: 12px; color: var(--ice); }
+  .contact-link-label {
+    font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim);
+  }
+  .contact-arrow { opacity: 0.4; transition: opacity 0.3s, transform 0.3s; }
+  .contact-link:hover .contact-arrow { opacity: 1; transform: translateX(4px); }
+  .contact-form-area { display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
+  .form-label {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 6px; display: block;
+  }
+  .form-input, .form-textarea {
+    width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+    color: var(--white); padding: 14px 18px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 300; outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    appearance: none; -webkit-appearance: none;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(138,138,138,0.5); }
+  .form-input:focus, .form-textarea:focus {
+    border-color: rgba(168,207,224,0.4); background: rgba(168,207,224,0.02);
+  }
+  .form-textarea { min-height: 100px; resize: vertical; }
+  .form-group { display: flex; flex-direction: column; }
+  .btn-submit {
+    margin-top: 8px; padding: 16px 36px; background: transparent;
+    border: 1px solid rgba(168,207,224,0.4); color: var(--ice);
+    font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase; cursor: none;
+    transition: background 0.3s, color 0.3s, border-color 0.3s; align-self: flex-start;
+  }
+  .btn-submit:hover { background: var(--ice); color: var(--black); border-color: var(--ice); }
+
+  /* FOOTER */
+  footer {
+    padding: 36px 48px; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--dim); }
+  .footer-social { display: flex; gap: 24px; }
+  .footer-social a {
+    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--dim); text-decoration: none; transition: color 0.3s;
+  }
+  .footer-social a:hover { color: var(--ice); }
+
+  /* NEWS */
+  #news { border-bottom: 1px solid var(--line); }
+  .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .news-card {
+    background: rgba(255,255,255,0.02); padding: 36px 32px;
+    border: 1px solid var(--line); transition: background 0.3s, border-color 0.3s;
+    position: relative; overflow: hidden; text-decoration: none; color: inherit; display: block;
+  }
+  .news-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 3px; background: var(--ice); transition: width 0.4s ease;
+  }
+  .news-card:hover::before { width: 100%; }
+  .news-card:hover { background: rgba(168,207,224,0.04); border-color: rgba(168,207,224,0.2); }
+  .news-date {
+    font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 6px;
+  }
+  .news-cat {
+    display: inline-block; font-size: 0.58rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ice); opacity: 0.8;
+    border: 1px solid rgba(168,207,224,0.25); padding: 3px 10px; margin-bottom: 14px;
+  }
+  .news-title { font-size: 1.05rem; font-weight: 500; margin-bottom: 10px; color: var(--white); line-height: 1.4; }
+  .news-summary { font-size: 0.82rem; line-height: 1.6; color: var(--dim); }
+  .news-empty {
+    grid-column: 1 / -1; text-align: center; padding: 60px 24px;
+    font-size: 0.8rem; color: var(--dim); letter-spacing: 0.1em;
+  }
+
+  /* CHAT WIDGET */
+  .chat-fab {
+    position: fixed; bottom: 32px; right: 32px; z-index: 1000;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--ice); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 24px rgba(168,207,224,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .chat-fab:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(168,207,224,0.45); }
+  .chat-fab svg { width: 26px; height: 26px; fill: var(--black); }
+  .chat-fab .close-icon { display: none; }
+  .chat-fab.open .chat-icon { display: none; }
+  .chat-fab.open .close-icon { display: block; }
+
+  .chat-panel {
+    position: fixed; bottom: 108px; right: 32px; z-index: 999;
+    width: 380px; max-height: 520px; background: #0a0b0f;
+    border: 1px solid var(--line); border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+    opacity: 0; transform: translateY(20px) scale(0.95);
+    pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+  }
+  .chat-panel.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+
+  .chat-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(168,207,224,0.15); display: flex;
+    align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem;
+    color: var(--ice); letter-spacing: 0.08em;
+  }
+  .chat-header-info h4 {
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    font-weight: 500; color: var(--white); margin: 0;
+  }
+  .chat-header-info span {
+    font-size: 0.62rem; letter-spacing: 0.12em; color: var(--dim);
+  }
+
+  .chat-messages {
+    flex: 1; overflow-y: auto; padding: 20px 24px;
+    display: flex; flex-direction: column; gap: 14px;
+    min-height: 280px; max-height: 340px;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+  .chat-msg {
+    max-width: 85%; padding: 12px 16px; border-radius: 12px;
+    font-size: 0.82rem; line-height: 1.55; animation: fadeUp 0.3s ease forwards;
+  }
+  .chat-msg.bot {
+    align-self: flex-start; background: rgba(168,207,224,0.08);
+    border: 1px solid rgba(168,207,224,0.12); color: var(--white);
+    border-bottom-left-radius: 4px;
+  }
+  .chat-msg.user {
+    align-self: flex-end; background: var(--ice); color: var(--black);
+    border-bottom-right-radius: 4px;
+  }
+  .chat-msg.typing { opacity: 0.6; }
+  .chat-msg.typing .dots span {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--ice); border-radius: 50%; margin: 0 2px;
+    animation: dotBounce 1.4s infinite ease-in-out;
+  }
+  .chat-msg.typing .dots span:nth-child(2) { animation-delay: 0.16s; }
+  .chat-msg.typing .dots span:nth-child(3) { animation-delay: 0.32s; }
+  @keyframes dotBounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  .chat-input-area {
+    padding: 16px 24px; border-top: 1px solid var(--line);
+    display: flex; gap: 10px; align-items: center;
+  }
+  .chat-input {
+    flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+    border-radius: 8px; padding: 10px 14px; color: var(--white);
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 300;
+    outline: none; transition: border-color 0.3s;
+  }
+  .chat-input::placeholder { color: rgba(138,138,138,0.5); }
+  .chat-input:focus { border-color: rgba(168,207,224,0.4); }
+  .chat-send {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: var(--ice); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.3s;
+  }
+  .chat-send:hover { opacity: 0.85; }
+  .chat-send svg { width: 16px; height: 16px; fill: var(--black); }
+
+  /* ACTION BANNER */
+  .action-banner {
+    position: relative; width: 100%; height: 50vh; min-height: 360px;
+    overflow: hidden; border-bottom: 1px solid var(--line);
+  }
+  .action-banner img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center 30%;
+  }
+  .action-banner-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(5,6,8,0.7) 0%, rgba(5,6,8,0.1) 50%, rgba(5,6,8,0.5) 100%);
+  }
+  .action-banner-text {
+    position: absolute; bottom: 48px; left: 48px;
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.5rem, 3vw, 2.5rem);
+    letter-spacing: 0.06em; color: var(--white); line-height: 1.1;
+  }
+  .action-banner-text span { color: var(--ice); }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hamburger { display: block; }
+    #hero, section, footer { padding-left: 24px; padding-right: 24px; }
+    #hero { padding-bottom: 60px; }
+    .hero-photo { background-position: 35% 35% !important; }
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-photo-wrap { max-width: 320px; }
+    .contact-inner, .projects-grid { grid-template-columns: 1fr; gap: 48px; }
+    .results-grid { grid-template-columns: 1fr; }
+    .sponsors-wrap { flex-direction: column; }
+    .sponsor-item { border-right: none; border-bottom: 1px solid var(--line); }
+    .news-grid { grid-template-columns: 1fr; }
+    .hero-scroll { display: none; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+    .chat-panel { width: calc(100vw - 32px); right: 16px; bottom: 100px; }
+    .chat-fab { bottom: 20px; right: 20px; width: 52px; height: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="#hero" class="nav-logo">NN</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#sponsors">Sponsors</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-overlay" id="mobileNav">
+  <a href="#about" class="mobile-nav-link">About</a>
+  <a href="#results" class="mobile-nav-link">Results</a>
+  <a href="#news" class="mobile-nav-link">News</a>
+  <a href="#projects" class="mobile-nav-link">Projects</a>
+  <a href="#sponsors" class="mobile-nav-link">Sponsors</a>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+</div>
+
+<!-- =============================================
+     HERO
+     写真の入れ方：
+     1. images/hero_action.jpg をGitHubにアップ
+     2. .hero-photo の background-image が自動で反映される
+     ============================================= -->
+<section id="hero">
+  <div class="hero-photo" style="background-image: url('images/hero_action.jpg');"></div>
+  <div class="hero-overlay"></div>
+  <div class="snow" id="snow"></div>
+
+  <div class="hero-content">
+    <p class="hero-tag">Japanese National Team · FIS World Cup</p>
+    <h1 class="hero-name">
+      Naoki<br>
+      <span>Naka</span>mura
+    </h1>
+    <p class="hero-sub">Professional Ski Jumper — Competing across 37 World Cup events annually</p>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <div class="stat-num">🥇</div>
+    <div class="stat-label">Team Ski Flying World Champs 2026</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">2nd</div>
+    <div class="stat-label">World Cup Sapporo 2026</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">OWG</div>
+    <div class="stat-label">Milano Cortina 2026</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">JPN</div>
+    <div class="stat-label">National Team</div>
+  </div>
+</div>
+
+<!-- =============================================
+     ABOUT
+     写真の入れ方：
+     1. images/profile.jpg をGitHubにアップ
+     2. <img> タグの src="images/profile.jpg" に変更
+     ============================================= -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-photo-wrap reveal">
+      <img src="images/profile.jpg" alt="Naoki Nakamura" class="about-photo">
+      <div class="about-photo-accent"></div>
+    </div>
+    <div class="about-right">
+      <div class="about-text reveal">
+        I'm a professional ski jumper representing Japan on the FIS World Cup circuit — competing across Europe and beyond from my base in Slovenia. But my story doesn't stop at the jump ramp.<br><br>
+        Off the hill, I build things. A coffee brand. A YouTube channel. A startup. I believe an athlete's career is only one dimension of who they are.
+      </div>
+      <div class="about-details reveal">
+        <div class="detail-row">
+          <span class="detail-key">Nationality</span>
+          <span class="detail-val">Japanese</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Based in</span>
+          <span class="detail-val">Slovenia</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Sport</span>
+          <span class="detail-val">Ski Jumping</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Circuit</span>
+          <span class="detail-val">FIS World Cup</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">World Ranking</span>
+          <span class="detail-val">~Top 25</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Events / Season</span>
+          <span class="detail-val">~37 World Cup</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="action-banner reveal">
+  <img src="images/hero_celebrate.jpg" alt="Naoki Nakamura celebrating at Planica">
+  <div class="action-banner-overlay"></div>
+  <div class="action-banner-text">Planica, <span>Slovenia</span></div>
+</div>
+
+<section id="results">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Results</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="results-grid">
+    <div class="result-card reveal">
+      <div class="result-season">Mar 2026 · World Cup</div>
+      <div class="result-event">Team Flying Hill HS240</div>
+      <div class="result-location">Planica, SLO</div>
+      <div class="result-rank">2nd</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Mar 2026 · World Cup</div>
+      <div class="result-event">Large Hill HS134</div>
+      <div class="result-location">Oslo, NOR</div>
+      <div class="result-rank">3rd</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Mar 2026 · World Cup</div>
+      <div class="result-event">Large Hill HS134</div>
+      <div class="result-location">Oslo, NOR</div>
+      <div class="result-rank">4th</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Jan 2026 · SFWC</div>
+      <div class="result-event">FIS Ski-Flying World Championships</div>
+      <div class="result-location">Team · Oberstdorf, GER</div>
+      <div class="result-rank">1st</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Jan 2026 · World Cup</div>
+      <div class="result-event">Large Hill HS137</div>
+      <div class="result-location">Sapporo, JPN</div>
+      <div class="result-rank">2nd</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Jan 2026 · SFWC</div>
+      <div class="result-event">FIS Ski-Flying World Championships</div>
+      <div class="result-location">Individual · Oberstdorf, GER</div>
+      <div class="result-rank">10th</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Mar 2026 · World Cup</div>
+      <div class="result-event">Flying Hill HS240</div>
+      <div class="result-location">Planica, SLO</div>
+      <div class="result-rank">6th</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Mar 2026 · World Cup</div>
+      <div class="result-event">Flying Hill HS235</div>
+      <div class="result-location">Kulm, AUT</div>
+      <div class="result-rank">6th</div>
+    </div>
+    <div class="result-card reveal">
+      <div class="result-season">Mar 2026 · World Cup</div>
+      <div class="result-event">Flying Hill HS240</div>
+      <div class="result-location">Planica, SLO</div>
+      <div class="result-rank">7th</div>
+    </div>
+  </div>
+</section>
+
+<section id="news">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">News & Updates</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="news-grid" id="newsGrid">
+    <div class="news-empty">Loading news...</div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-tag">Coffee · Brand</div>
+      <div class="project-name">Japaner<br>Kaffee</div>
+      <div class="project-desc">A specialty drip coffee brand born from the intersection of ski jumping and the art of brewing. Each bag tells a story of precision, timing, and the perfect pour — crafted for those who appreciate both.</div>
+      <div class="project-status">
+        <span class="status-dot soon"></span>
+        Coming Soon
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-tag">YouTube · Content</div>
+      <div class="project-name">世界の<br>中村ちゃんねる</div>
+      <div class="project-desc">A window into life as a Japanese athlete competing at the highest level across Europe — from the jump tower to everyday adventures abroad. Candid, unfiltered, and genuinely global.</div>
+      <div class="project-status">
+        <span class="status-dot" style="background: #6bcf8a; box-shadow: 0 0 8px rgba(107,207,138,0.5);"></span>
+        <a href="https://www.youtube.com/@世界の中村ちゃんねる" target="_blank" style="color: inherit; text-decoration: none;">Watch on YouTube ↗</a>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-tag">Food · Startup</div>
+      <div class="project-name">Protein<br>Ramen</div>
+      <div class="project-desc">High-protein instant ramen bridging Japanese food culture with European performance nutrition. Made for athletes, designed for everyone.</div>
+      <div class="project-status">
+        <span class="status-dot soon"></span>
+        Coming Soon
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-tag">Instagram · Community</div>
+      <div class="project-name">@naoki<br>nakamura</div>
+      <div class="project-desc">Behind-the-scenes of competing at the World Cup level — training, travel, races, and the realities of life as a professional athlete in Europe.</div>
+      <div class="project-status">
+        <span class="status-dot" style="background: #6bcf8a; box-shadow: 0 0 8px rgba(107,207,138,0.5);"></span>
+        <a href="https://www.instagram.com/naokinakamura0919/" target="_blank" style="color: inherit; text-decoration: none;">Follow on Instagram ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORS
+     スポンサー追加方法：
+     下の コメントアウトブロックをコピペして
+     src と alt とテキストを変えるだけ！ -->
+<section id="sponsors">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Sponsors</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="sponsors-wrap reveal">
+
+    <!-- スポンサー 1 -->
+    <div class="sponsor-item">
+      <img src="images/yotsuba.png" alt="よつ葉乳業" class="sponsor-logo" style="filter: none;">
+      <div class="sponsor-cat">よつ葉乳業株式会社 · Official Partner</div>
+    </div>
+
+    <!-- スポンサー 2 -->
+    <div class="sponsor-item">
+      <img src="images/traicy.png" alt="TRAICY" class="sponsor-logo" style="filter: none;">
+      <div class="sponsor-cat">Travel &amp; Aviation Media · Official Partner</div>
+    </div>
+
+    <div class="sponsor-item">
+      <img src="images/paneru.png" alt="ぱねるくん" class="sponsor-logo" style="filter: none;">
+      <div class="sponsor-cat">Solar Energy · Official Partner</div>
+    </div>
+    <div class="sponsor-item">
+      <img src="images/nitten.png" alt="Nitten" class="sponsor-logo" style="filter: none; max-height: 90px;">
+      <div class="sponsor-cat">Nitten · Official Partner</div>
+    </div>
+
+    <div class="sponsor-item" style="border-right: none; opacity: 0.4; justify-content: center;">
+      <div class="sponsor-cat" style="font-size: 0.75rem;">Sponsorship enquiries welcome</div>
+      <a href="#contact" style="font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ice); text-decoration: none; margin-top: 8px;">Get in touch →</a>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="contact-heading">Let's<br><span>Work</span><br>Together</div>
+      <p class="contact-tagline">Open to sponsorship partnerships, brand collaborations, speaking opportunities, and media enquiries.</p>
+      <div class="contact-links">
+        <a href="https://www.instagram.com/naokinakamura0919/" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-label">Instagram</div>
+            <div>@naokinakamura0919</div>
+          </div>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a href="https://www.youtube.com/@世界の中村ちゃんねる" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-label">YouTube</div>
+            <div>世界の中村ちゃんねる</div>
+          </div>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a href="https://x.com/1bierbitteq" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-label">X (Twitter)</div>
+            <div>@1bierbitte</div>
+          </div>
+          <span class="contact-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form-area reveal">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Tell me about your project or enquiry..."></textarea>
+      </div>
+      <button class="btn-submit">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- CHAT WIDGET -->
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-avatar">NN</div>
+    <div class="chat-header-info">
+      <h4>Naoki's AI Assistant</h4>
+      <span>Sponsorship &middot; Media &middot; Collaboration</span>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">
+      Hi! I'm Naoki's AI assistant. Whether you're interested in sponsorship, media enquiries, or collaboration — I'm here to help. What can I do for you?
+    </div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+    <button class="chat-send" id="chatSend">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<button class="chat-fab" id="chatFab" aria-label="Open chat">
+  <svg class="chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+  <svg class="close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+</button>
+
+<footer>
+  <p>© 2026 Naoki Nakamura. All rights reserved.</p>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/naokinakamura0919/" target="_blank">Instagram</a>
+    <a href="https://www.youtube.com/@世界の中村ちゃんねる" target="_blank">YouTube</a>
+    <a href="https://x.com/1bierbitte" target="_blank">X</a>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 4 + 'px';
+    cursor.style.top = my - 4 + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Hero placeholder removed — photo is now always present
+
+  const snow = document.getElementById('snow');
+  for (let i = 0; i < 40; i++) {
+    const f = document.createElement('div');
+    f.className = 'flake';
+    f.style.left = Math.random() * 100 + '%';
+    f.style.top = Math.random() * 100 + '%';
+    f.style.animationDuration = (8 + Math.random() * 12) + 's';
+    f.style.animationDelay = (-Math.random() * 20) + 's';
+    f.style.opacity = Math.random() * 0.5 + 0.1;
+    const size = Math.random() * 2 + 1;
+    f.style.width = size + 'px';
+    f.style.height = size + 'px';
+    snow.appendChild(f);
+  }
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.01, rootMargin: '50px' });
+  reveals.forEach(el => observer.observe(el));
+  // Fallback: make everything visible after 2s in case observer doesn't fire
+  setTimeout(() => reveals.forEach(el => el.classList.add('visible')), 2000);
+
+  // ===== MOBILE NAV =====
+  function toggleMobileNav() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobileNav').classList.toggle('open');
+    var isOpen = document.getElementById('mobileNav').classList.contains('open');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  function closeMobileNav() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileNav').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+    link.setAttribute('onclick', 'closeMobileNav()');
+  });
+
+  // ===== NEWS FEED =====
+  setTimeout(async function() {
+    const grid = document.getElementById('newsGrid');
+    try {
+      const res = await fetch('news.json');
+      if (!res.ok) throw new Error('fetch failed');
+      const news = await res.json();
+      news.sort((a, b) => new Date(b.date) - new Date(a.date));
+      grid.innerHTML = '';
+      news.forEach(item => {
+        const card = document.createElement(item.link ? 'a' : 'div');
+        card.className = 'news-card reveal';
+        if (item.link) { card.href = item.link; card.target = '_blank'; }
+        const d = new Date(item.date);
+        const dateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        card.innerHTML = `
+          <div class="news-date">${dateStr}</div>
+          <div class="news-cat">${item.category}</div>
+          <div class="news-title">${item.title}</div>
+          <div class="news-summary">${item.summary}</div>
+        `;
+        grid.appendChild(card);
+      });
+      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    } catch (e) {
+      grid.innerHTML = '<div class="news-empty">News will appear here soon.</div>';
+    }
+  }, 200);
+
+  // ===== CHAT WIDGET =====
+  const CHAT_API_URL = ''; // Set your API endpoint here
+  const chatFab = document.getElementById('chatFab');
+  const chatPanel = document.getElementById('chatPanel');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+  const chatMessages = document.getElementById('chatMessages');
+
+  chatFab.addEventListener('click', () => {
+    chatFab.classList.toggle('open');
+    chatPanel.classList.toggle('open');
+    if (chatPanel.classList.contains('open')) chatInput.focus();
+  });
+
+  function addMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg ' + sender;
+    msg.textContent = text;
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return msg;
+  }
+
+  function showTyping() {
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg bot typing';
+    msg.innerHTML = '<div class="dots"><span></span><span></span><span></span></div>';
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return msg;
+  }
+
+  async function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+    chatInput.value = '';
+
+    const typing = showTyping();
+
+    if (CHAT_API_URL) {
+      try {
+        const res = await fetch(CHAT_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await res.json();
+        typing.remove();
+        addMessage(data.reply || data.message || 'Thanks for your message!', 'bot');
+      } catch (e) {
+        typing.remove();
+        addMessage('Sorry, something went wrong. Please try again or reach out via Instagram.', 'bot');
+      }
+    } else {
+      // Demo mode — no API connected
+      setTimeout(() => {
+        typing.remove();
+        const replies = [
+          "Thanks for reaching out! I've noted your message. Naoki or his team will get back to you soon.",
+          "Great question! For sponsorship details, Naoki's team will follow up with you directly.",
+          "Appreciate your interest! Your enquiry has been received. Expect a response within 24-48 hours.",
+          "Thank you! I'll make sure Naoki sees your message. Is there anything else I can help with?"
+        ];
+        addMessage(replies[Math.floor(Math.random() * replies.length)], 'bot');
+      }, 1200 + Math.random() * 800);
+    }
+  }
+
+  chatSend.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+</body>
+</html>
