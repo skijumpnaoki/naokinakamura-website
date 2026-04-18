@@ -953,20 +953,9 @@
         </a>
       </div>
     </div>
-    <div class="contact-form-area reveal">
-      <div class="form-group">
-        <label class="form-label">Name</label>
-        <input type="text" class="form-input" placeholder="Your name">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-input" placeholder="your@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Message</label>
-        <textarea class="form-textarea" placeholder="Tell me about your project or enquiry..."></textarea>
-      </div>
-      <button class="btn-submit">Send Message</button>
+    <div class="contact-form-area reveal" style="display:flex; flex-direction:column; justify-content:center; align-items:flex-start; gap:24px;">
+      <p style="color:var(--dim); font-size:0.95rem; line-height:1.8;">For sponsorship, media, or collaboration enquiries — chat with my AI assistant. It's available 24/7 and will make sure your message gets to me.</p>
+      <button class="btn-submit" onclick="document.getElementById('chatFab').click(); return false;">Chat with AI Assistant →</button>
     </div>
   </div>
 </section>
