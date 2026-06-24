@@ -454,6 +454,16 @@
     grid-column: 1 / -1; text-align: center; padding: 60px 24px;
     font-size: 0.8rem; color: var(--dim); letter-spacing: 0.1em;
   }
+  /* optional thumbnail — bleeds to the card edges, kept subtle */
+  .news-thumb {
+    margin: -36px -32px 24px; height: 160px; overflow: hidden;
+    background: rgba(255,255,255,0.03);
+  }
+  .news-thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    opacity: 0.82; transition: opacity 0.4s ease, transform 0.6s ease;
+  }
+  .news-card:hover .news-thumb img { opacity: 1; transform: scale(1.04); }
 
   /* CHAT WIDGET */
   .chat-fab {
@@ -1060,34 +1070,119 @@
     link.setAttribute('onclick', 'closeMobileNav()');
   });
 
-  // ===== NEWS FEED =====
-  setTimeout(async function() {
-    const grid = document.getElementById('newsGrid');
-    try {
-      const res = await fetch('news.json');
-      if (!res.ok) throw new Error('fetch failed');
-      const news = await res.json();
-      news.sort((a, b) => new Date(b.date) - new Date(a.date));
-      grid.innerHTML = '';
-      news.forEach(item => {
-        const card = document.createElement(item.link ? 'a' : 'div');
-        card.className = 'news-card reveal';
-        if (item.link) { card.href = item.link; card.target = '_blank'; }
-        const d = new Date(item.date);
-        const dateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        card.innerHTML = `
-          <div class="news-date">${dateStr}</div>
-          <div class="news-cat">${item.category}</div>
-          <div class="news-title">${item.title}</div>
-          <div class="news-summary">${item.summary}</div>
-        `;
-        grid.appendChild(card);
-      });
-      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    } catch (e) {
-      grid.innerHTML = '<div class="news-empty">News will appear here soon.</div>';
+  // ===== NEWS FEED (Flying Report public API) =====
+  // Data comes from the /api/news serverless proxy, which talks to the Flying
+  // Report public API (base URL configured server-side via FLYING_REPORT_API_BASE)
+  // and falls back to mock data until that endpoint is published.
+  const NEWS_API = '/api/news';
+  const NEWS_LIMIT = 8; // show the 5–8 most recent
+
+  // The API returns stable, untranslated `type` + `tags` slugs, so the badge labels
+  // live here. Prefer a known competition tag (gives the nice "World Cup" style badge),
+  // then fall back to the post type, then a generic label for any future/unknown type.
+  const NEWS_COMPETITION_LABEL = {
+    'world-cup':          { ja: 'ワールドカップ',     en: 'World Cup' },
+    'continental-cup':    { ja: 'コンチネンタルC',    en: 'Continental Cup' },
+    'grand-prix':         { ja: 'グランプリ',         en: 'Grand Prix' },
+    'summer-grand-prix':  { ja: 'サマーGP',           en: 'Summer Grand Prix' },
+    'world-championships':{ ja: '世界選手権',         en: 'World Championships' },
+    'olympics':           { ja: 'オリンピック',       en: 'Olympics' },
+    'fis-cup':            { ja: 'FISカップ',          en: 'FIS Cup' },
+  };
+  const NEWS_TYPE_LABEL = {
+    result:  { ja: '結果',       en: 'Result' },
+    article: { ja: 'ジャーナル', en: 'Journal' },
+    report:  { ja: 'レポート',   en: 'Report' },
+  };
+  const NEWS_GENERIC_LABEL = { ja: '更新', en: 'Update' };
+
+  function pickLabel(map, lang) { return map[lang] || map.en; }
+
+  // Single source of truth for language — derived from <html lang>, so a future
+  // JP/EN switcher only needs to update that attribute and re-run loadNews().
+  function siteLang() {
+    return String(document.documentElement.lang || 'en').toLowerCase().startsWith('ja') ? 'ja' : 'en';
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // Only allow plain http(s) image URLs (no characters that could break out of attributes).
+  function safeImageUrl(url) {
+    if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return null;
+    if (/["'<>\\]/.test(url)) return null;
+    return url;
+  }
+
+  function newsCategory(post, lang) {
+    const tags = Array.isArray(post.tags) ? post.tags : [];
+    for (const t of tags) {
+      if (NEWS_COMPETITION_LABEL[t]) return pickLabel(NEWS_COMPETITION_LABEL[t], lang);
     }
-  }, 200);
+    if (NEWS_TYPE_LABEL[post.type]) return pickLabel(NEWS_TYPE_LABEL[post.type], lang);
+    return pickLabel(NEWS_GENERIC_LABEL, lang); // unknown / future type
+  }
+
+  function formatNewsDate(dateStr, lang) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(lang === 'ja' ? 'ja-JP' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  function renderNews(posts, lang) {
+    const grid = document.getElementById('newsGrid');
+    grid.innerHTML = '';
+    posts.forEach(post => {
+      const hasLink = !!post.url;
+      const card = document.createElement(hasLink ? 'a' : 'div');
+      card.className = 'news-card reveal';
+      if (hasLink) { card.href = post.url; card.target = '_blank'; card.rel = 'noopener'; }
+
+      let html = '';
+      const img = safeImageUrl(post.image);
+      if (img) html += `<div class="news-thumb"><img src="${escapeHtml(img)}" alt="" loading="lazy"></div>`;
+      const dateStr = formatNewsDate(post.date, lang);
+      if (dateStr) html += `<div class="news-date">${escapeHtml(dateStr)}</div>`;
+      html += `<div class="news-cat">${escapeHtml(newsCategory(post, lang))}</div>`;
+      html += `<div class="news-title">${escapeHtml(post.title)}</div>`;
+      if (post.excerpt) html += `<div class="news-summary">${escapeHtml(post.excerpt)}</div>`;
+      card.innerHTML = html;
+      grid.appendChild(card);
+    });
+    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  function setNewsMessage(text) {
+    document.getElementById('newsGrid').innerHTML = `<div class="news-empty">${escapeHtml(text)}</div>`;
+  }
+
+  async function loadNews() {
+    const lang = siteLang();
+    setNewsMessage(lang === 'ja' ? '読み込み中…' : 'Loading news…');
+
+    let posts = null;
+    try {
+      const res = await fetch(`${NEWS_API}?lang=${lang}&limit=${NEWS_LIMIT}`, { headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error('news proxy ' + res.status);
+      const data = await res.json();
+      posts = data && Array.isArray(data.posts) ? data.posts : [];
+    } catch (e) {
+      // Proxy unreachable → show the empty state, never fabricated content.
+      posts = [];
+    }
+
+    if (!posts.length) {
+      setNewsMessage(lang === 'ja' ? '近日更新' : 'News will appear here soon.');
+      return;
+    }
+    renderNews(posts.slice(0, NEWS_LIMIT), lang);
+  }
+
+  setTimeout(loadNews, 200);
 
   // ===== CHAT WIDGET =====
   const CHAT_API_URL = '/api/chat';
