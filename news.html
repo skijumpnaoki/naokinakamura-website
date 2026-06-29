@@ -270,6 +270,17 @@
     }
 
     article.innerHTML = html;
+    // Hide any image (and its <figure>/hero wrapper) that fails to load — e.g. if an
+    // image host is decommissioned before body_html is re-pointed — so the article
+    // degrades cleanly instead of showing broken-image icons.
+    article.querySelectorAll('img').forEach(function (img) {
+      const onFail = function () {
+        const wrap = img.closest('figure') || img.closest('.a-hero');
+        (wrap || img).style.display = 'none';
+      };
+      if (img.complete && img.naturalWidth === 0) onFail();
+      else img.addEventListener('error', onFail, { once: true });
+    });
     article.hidden = false;
     loading.hidden = true;
     document.title = (post.title ? post.title + ' — ' : '') + 'Naoki Nakamura';

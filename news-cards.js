@@ -78,6 +78,13 @@
     html += '<div class="news-title">' + escapeHtml(post.title) + '</div>';
     if (post.excerpt) html += '<div class="news-summary">' + escapeHtml(post.excerpt) + '</div>';
     card.innerHTML = html;
+    // If the thumbnail 404s (e.g. an image host is taken down), drop it so the card stays clean.
+    const thumbImg = card.querySelector('.news-thumb img');
+    if (thumbImg) {
+      const dropThumb = function () { const t = card.querySelector('.news-thumb'); if (t) t.remove(); };
+      if (thumbImg.complete && thumbImg.naturalWidth === 0) dropThumb();
+      else thumbImg.addEventListener('error', dropThumb, { once: true });
+    }
     return card;
   }
 
