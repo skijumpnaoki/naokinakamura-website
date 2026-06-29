@@ -72,6 +72,10 @@
   .a-meta { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
   .a-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
   .a-tag { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--line); padding: 3px 9px; }
+  .a-langnote {
+    font-size: 0.78rem; color: var(--dim); border: 1px solid var(--line);
+    border-left: 2px solid var(--ice); padding: 10px 14px; margin: 0 0 30px;
+  }
   .a-hero { width: 100%; margin: 8px 0 36px; }
   .a-hero img { width: 100%; height: auto; display: block; }
   .a-excerpt { font-size: 1.05rem; color: #cfcdc8; margin-bottom: 30px; font-style: italic; }
@@ -248,6 +252,10 @@
     if (date) html += `<div class="a-meta">${escapeHtml(date)}</div>`;
     if (Array.isArray(post.tags) && post.tags.length) {
       html += `<div class="a-tags">${post.tags.map(tg => `<span class="a-tag">${escapeHtml(prettyTag(tg))}</span>`).join('')}</div>`;
+    }
+    // en site + ja-only article (no English translation yet) → tell the reader
+    if (lang === 'en' && post.lang === 'ja') {
+      html += `<div class="a-langnote">This entry is shown in Japanese — an English translation isn’t available yet.</div>`;
     }
     if (hero) html += `<div class="a-hero"><img src="${escapeHtml(hero)}" alt="${escapeHtml(post.title || '')}" loading="lazy"></div>`;
 

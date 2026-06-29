@@ -28,6 +28,7 @@ function normalizePost(p) {
     image: typeof p.image === 'string' && p.image ? p.image : null,
     tags: Array.isArray(p.tags) ? p.tags.filter((t) => typeof t === 'string') : [],
     body_html: typeof p.body_html === 'string' ? p.body_html : null,
+    lang: typeof p.lang === 'string' ? p.lang : null, // the post's ACTUAL language (may differ from requested)
   };
 }
 
@@ -70,7 +71,9 @@ export default async function handler(req, res) {
     const raw = await upstream.json();
     const post = normalizePost(raw);
     if (!post || !post.id) throw new Error('malformed upstream post');
-    const payload = { ...post, lang, source: 'live' };
+    // post.lang = actual language returned; requestedLang = what we asked for.
+    // (en request + lang:"ja" → article isn't translated yet; the viewer notes that.)
+    const payload = { ...post, requestedLang: lang, source: 'live' };
     cache[key] = { at: now, ttl: OK_TTL_MS, status: 200, payload };
     res.setHeader('X-Post-Cache', 'MISS');
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
