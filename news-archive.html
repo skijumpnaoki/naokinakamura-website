@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News &amp; Updates — Naoki Nakamura</title>
+<meta name="description" content="All news, results and journal entries from Naoki Nakamura, Japanese professional ski jumper.">
+<meta property="og:title" content="News &amp; Updates — Naoki Nakamura">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/images/hero_action.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/news-cards.css">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --black: #050608; --white: #f0ede8; --ice: #a8cfe0; --dim: #8a8a8a; --line: rgba(255,255,255,0.08); }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; -webkit-font-smoothing: antialiased; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 32px; border-bottom: 1px solid var(--line); background: rgba(5,6,8,0.86); backdrop-filter: blur(8px);
+  }
+  .topbar .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.12em; color: var(--white); text-decoration: none; opacity: 0.9; }
+  .topbar .back { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); text-decoration: none; transition: color 0.3s; }
+  .topbar .back:hover { color: var(--white); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 72px 32px 120px; min-height: 60vh; }
+  .archive-head { margin-bottom: 48px; }
+  .archive-head .eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ice); opacity: 0.8; }
+  .archive-head h1 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(2.4rem, 7vw, 4rem); letter-spacing: 0.04em; margin-top: 10px; line-height: 1; }
+
+  #status { /* reuse .news-empty look for loading / empty / error */ }
+  .load-more-wrap { text-align: center; margin-top: 44px; }
+  .load-more {
+    font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ice); background: transparent; border: 1px solid rgba(168,207,224,0.4);
+    padding: 14px 32px; cursor: pointer; transition: background 0.3s, color 0.3s;
+  }
+  .load-more:hover { background: var(--ice); color: var(--black); }
+  .load-more[disabled] { opacity: 0.5; cursor: default; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px; text-align: center; }
+  footer a { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); text-decoration: none; }
+  footer a:hover { color: var(--ice); }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="/" class="logo">NN</a>
+    <a href="/#news" class="back">← Home</a>
+  </div>
+
+  <main>
+    <div class="archive-head">
+      <span class="eyebrow" id="eyebrow">Archive</span>
+      <h1 id="heading">News &amp; Updates</h1>
+    </div>
+    <div class="news-grid" id="grid"></div>
+    <div class="news-empty" id="status">Loading…</div>
+    <div class="load-more-wrap"><button class="load-more" id="loadMore" hidden></button></div>
+  </main>
+
+  <footer><a href="/">← Naoki Nakamura</a></footer>
+
+<script src="/news-cards.js"></script>
+<script>
+  const NEWS_API = '/api/news';
+  const PAGE_SIZE = 12;
+
+  const STR = {
+    en: { loading: 'Loading…', empty: 'News will appear here soon.', error: 'Couldn’t load news. Please try again.',
+          more: 'Load more', loadingMore: 'Loading…', heading: 'News & Updates', eyebrow: 'Archive' },
+    ja: { loading: '読み込み中…', empty: '近日更新', error: 'ニュースを読み込めませんでした。もう一度お試しください。',
+          more: 'もっと見る', loadingMore: '読み込み中…', heading: 'News & Updates', eyebrow: 'アーカイブ' },
+  };
+  function siteLang() { return String(document.documentElement.lang || 'en').toLowerCase().startsWith('ja') ? 'ja' : 'en'; }
+  function t(k) { const l = siteLang(); return (STR[l] && STR[l][k]) || STR.en[k]; }
+
+  const state = { offset: 0, loaded: 0, total: null, loading: false, errored: false };
+  const grid = () => document.getElementById('grid');
+  const statusEl = () => document.getElementById('status');
+  const moreBtn = () => document.getElementById('loadMore');
+
+  function setStatus(msg) { const s = statusEl(); if (!msg) { s.hidden = true; s.textContent = ''; } else { s.hidden = false; s.textContent = msg; } }
+
+  function appendPosts(posts, lang) {
+    const g = grid();
+    posts.forEach(p => g.appendChild(NewsCards.buildNewsCard(p, lang)));
+    state.loaded += posts.length;
+  }
+
+  function updateLoadMore() {
+    const btn = moreBtn();
+    const hasMore = state.total != null && state.loaded < state.total;
+    btn.hidden = !hasMore;
+    btn.disabled = state.loading;
+    btn.textContent = state.loading ? t('loadingMore') : t('more');
+  }
+
+  async function loadPage() {
+    if (state.loading) return;
+    state.loading = true; state.errored = false;
+    const lang = siteLang();
+    const first = state.loaded === 0;
+    if (first) setStatus(t('loading')); else updateLoadMore();
+    try {
+      const res = await fetch(`${NEWS_API}?lang=${lang}&limit=${PAGE_SIZE}&offset=${state.offset}`, { headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error('news proxy ' + res.status);
+      const data = await res.json();
+      const posts = data && Array.isArray(data.posts) ? data.posts : [];
+      state.total = (data && Number.isFinite(data.total)) ? data.total : (state.loaded + posts.length);
+      appendPosts(posts, lang);
+      state.offset += posts.length;
+      state.loading = false;
+      if (state.loaded === 0) { setStatus(t('empty')); }
+      else { setStatus(null); }
+      // safety: a page returning 0 posts ends pagination even if total disagrees
+      if (posts.length === 0) state.total = state.loaded;
+      updateLoadMore();
+    } catch (e) {
+      state.loading = false; state.errored = true;
+      if (state.loaded === 0) setStatus(t('error'));
+      updateLoadMore();
+    }
+  }
+
+  function applyChrome() {
+    document.getElementById('heading').textContent = t('heading');
+    document.getElementById('eyebrow').textContent = t('eyebrow');
+  }
+
+  moreBtn().addEventListener('click', loadPage);
+  applyChrome();
+  loadPage();
+
+  // expose for diagnostics / tests
+  window.__archive = { state, appendPosts, updateLoadMore, loadPage, setStatus };
+</script>
+</body>
+</html>
