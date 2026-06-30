@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<!-- Naometer Mobility — sponsorship / carbon-offset landing page (EN) -->
+<!-- Restyled to the naokinakamura.site design language (black · ice · DM Sans / Bebas Neue / Cormorant). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naometer Mobility — Measure every kilometre. Offset it to zero.</title>
+<meta name="description" content="Become a Mobility Partner: help measure and fully offset the CO₂ from Naoki Nakamura's World Cup travel, and ride along on the van, on social, and on the site.">
+<meta property="og:title" content="Naometer Mobility — Measure every kilometre. Offset it to zero.">
+<meta property="og:description" content="Measure the travel. Offset it in full with retired JCX carbon credits. 6 partner slots for the 2026–27 season.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/images/hero_action.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#050608; --panel:rgba(255,255,255,.02); --panel-2:rgba(255,255,255,.035);
+    --white:#f0ede8; --dim:#8a8a8a; --steel:#6f7782;
+    --ice:#a8cfe0; --ice-deep:#7fb3cb;
+    --ember:#d08a57;                 /* sparing warm accent — the "emissions" half of the story */
+    --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.16);
+    --dm:"DM Sans",system-ui,sans-serif;
+    --bebas:"Bebas Neue",sans-serif;
+    --cormorant:"Cormorant Garamond",Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--dm);font-weight:300;background:var(--black);color:var(--white);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+  section{position:relative}
+  a{color:inherit}
+
+  .eyebrow{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ice);display:flex;align-items:center;gap:13px;font-weight:400}
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.7}
+  .eyebrow.dim{color:var(--steel)}
+  h2.title{font-family:var(--cormorant);font-weight:500;font-size:clamp(26px,4.4vw,44px);line-height:1.2;margin:18px 0 16px}
+  .lead{color:var(--dim);font-size:clamp(15px,1.7vw,17px);max-width:62ch;font-weight:300}
+  .mono{font-variant-numeric:tabular-nums}
+
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:linear-gradient(to bottom,rgba(5,6,8,.92),rgba(5,6,8,.7));border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-family:var(--bebas);font-size:1.15rem;letter-spacing:.16em;color:var(--white)}
+  .brand b{color:var(--ice);font-weight:400}
+  .nav-cta{font-weight:500;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--black);background:var(--ice);padding:10px 18px;border-radius:999px;text-decoration:none;transition:.2s}
+  .nav-cta:hover{background:#c2ddea;transform:translateY(-1px)}
+
+  /* hero */
+  .hero{padding:clamp(64px,11vh,116px) 0 70px;overflow:hidden}
+  .hero h1{font-family:var(--cormorant);font-weight:500;font-size:clamp(34px,6.4vw,68px);line-height:1.12;margin:22px 0 24px;text-wrap:balance}
+  .hero h1 .z{font-style:italic;color:var(--ice)}
+  .hero .lead{font-size:clamp(16px,2vw,19px);max-width:54ch}
+  .pledge-chip{display:inline-flex;align-items:center;gap:16px;flex-wrap:wrap;margin:34px 0 26px;padding:16px 24px;border:1px solid rgba(168,207,224,.3);border-radius:4px;background:linear-gradient(180deg,rgba(168,207,224,.08),transparent)}
+  .pledge-chip .big{font-family:var(--bebas);font-size:1.7rem;letter-spacing:.02em;color:var(--white)}
+  .pledge-chip .big span{color:var(--ice)}
+  .pledge-chip .meta{font-size:.8rem;color:var(--dim);letter-spacing:.02em}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{font-weight:500;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:15px 30px;border-radius:999px;transition:.2s;display:inline-block}
+  .btn-primary{background:var(--ice);color:var(--black)}
+  .btn-primary:hover{background:#c2ddea;transform:translateY(-2px)}
+  .btn-ghost{color:var(--white);border:1px solid var(--line-strong)}
+  .btn-ghost:hover{border-color:var(--ice);color:var(--ice);transform:translateY(-2px)}
+  .btn-soon{background:transparent;color:var(--steel);border:1px dashed var(--line-strong);cursor:default;pointer-events:none}
+  .nav-cta.soon{background:transparent;color:var(--steel);border:1px solid var(--line);pointer-events:none}
+
+  /* net-zero signature graphic */
+  .balance{margin-top:52px;border:1px solid var(--line);border-radius:6px;padding:26px 28px 18px;background:var(--panel)}
+  .balance svg{width:100%;height:172px;display:block}
+  .balance .cap{display:flex;justify-content:space-between;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--steel);margin-top:10px}
+  .balance .cap b{color:var(--white);font-weight:500}
+
+  .telem{margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .telem div{padding:20px 18px;border-right:1px solid var(--line)}
+  .telem div:last-child{border-right:0}
+  .telem .v{font-family:var(--bebas);font-size:clamp(26px,3vw,38px);line-height:1;letter-spacing:.01em;color:var(--white)}
+  .telem .v.g{color:var(--ice)}
+  .telem .v small{font-family:var(--dm);font-weight:400;font-size:.34em;margin-left:3px;color:var(--steel);letter-spacing:.04em}
+  .telem .k{font-size:.72rem;color:var(--steel);margin-top:9px;letter-spacing:.04em}
+
+  .band{padding:84px 0;border-top:1px solid var(--line)}
+  .band.alt{background:rgba(255,255,255,.014)}
+
+  /* pledge band */
+  .pledge-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+  .flow{border:1px solid var(--line);border-radius:6px;background:var(--panel);overflow:hidden}
+  .flow .step{display:flex;gap:18px;align-items:flex-start;padding:20px 24px;border-bottom:1px solid var(--line)}
+  .flow .step:last-child{border-bottom:0}
+  .flow .n{font-family:var(--bebas);font-size:.9rem;letter-spacing:.08em;color:var(--ice);border:1px solid rgba(168,207,224,.35);border-radius:4px;padding:3px 10px;white-space:nowrap;margin-top:3px}
+  .flow .t{font-weight:500;font-size:.97rem;color:var(--white)}
+  .flow .d{font-size:.84rem;color:var(--dim)}
+
+  /* naometer structure */
+  .tree{border:1px solid var(--line);border-radius:6px;padding:32px;background:var(--panel);margin-top:34px}
+  .tree .root{font-size:.92rem;letter-spacing:.02em;color:var(--white);font-weight:500}
+  .tree .root .em{color:var(--ice);font-weight:300}
+  .tree .branch{display:flex;gap:16px;margin-top:20px;padding-left:6px}
+  .tree .pipe{color:var(--steel);font-family:var(--dm)}
+  .tree .b-t{font-weight:500;font-size:.95rem;color:var(--white)}
+  .tree .b-t .now{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);background:var(--ice);border-radius:4px;padding:3px 8px;margin-left:10px;vertical-align:middle}
+  .tree .b-d{font-size:.84rem;color:var(--dim)}
+
+  /* deliverables */
+  .deck{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:38px}
+  .card{border:1px solid var(--line);border-radius:6px;padding:28px 26px;background:var(--panel);transition:.25s;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--ice);transition:width .4s ease}
+  .card:hover::before{width:100%}
+  .card:hover{transform:translateY(-4px);border-color:var(--line-strong)}
+  .card.lead-card{border-color:rgba(168,207,224,.4);background:linear-gradient(180deg,rgba(168,207,224,.06),var(--panel))}
+  .card .idx{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ice)}
+  .card h3{font-family:var(--cormorant);font-weight:600;font-size:1.32rem;margin:13px 0 10px;line-height:1.3;color:var(--white)}
+  .card p{font-size:.86rem;color:var(--dim);line-height:1.7}
+  .card .tag{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);margin-top:16px;display:block}
+
+  /* price */
+  .price-2{display:grid;grid-template-columns:.95fr 1.05fr;gap:46px;align-items:center}
+  .price-box{border:1px solid var(--line-strong);border-radius:8px;padding:36px;background:linear-gradient(180deg,rgba(168,207,224,.09),transparent)}
+  .price-box .amount{font-family:var(--bebas);font-size:clamp(46px,6.6vw,64px);line-height:.95;letter-spacing:.01em}
+  .price-box .amount span{color:var(--ice);font-size:.5em}
+  .price-box .sub{color:var(--dim);font-size:.85rem;margin-top:14px}
+  .slots{display:flex;gap:8px;margin:24px 0 7px}
+  .slot{flex:1;height:9px;border-radius:2px;background:var(--ice)}
+  .slot.open{background:transparent;border:1px dashed var(--line-strong)}
+  .slots-label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
+  .incl{list-style:none}
+  .incl li{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid var(--line);font-size:.93rem;color:var(--white);font-weight:300}
+  .incl li:last-child{border-bottom:0}
+  .incl .ck{flex:0 0 auto;color:var(--ice);font-weight:500}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  .step-c{padding:26px 24px;border:1px solid var(--line);border-radius:6px}
+  .step-c .n{font-family:var(--bebas);font-size:2.1rem;line-height:1;color:var(--ice)}
+  .step-c h4{font-family:var(--cormorant);font-weight:600;font-size:1.25rem;margin:12px 0 8px;color:var(--white)}
+  .step-c p{font-size:.84rem;color:var(--dim)}
+
+  .final{padding:96px 0;text-align:center;border-top:1px solid var(--line);background:radial-gradient(120% 130% at 50% 0%,rgba(168,207,224,.1),transparent 60%)}
+  .final h2{font-family:var(--cormorant);font-weight:500;font-size:clamp(28px,5.4vw,50px);line-height:1.18;text-wrap:balance}
+  .final .lead{margin:18px auto 30px}
+  .final .eyebrow{justify-content:center}
+  .final .cta-row{justify-content:center}
+  .fine{margin:40px auto 0;font-size:.72rem;color:var(--steel);max-width:68ch;line-height:1.8}
+
+  footer{border-top:1px solid var(--line);padding:32px 0}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  footer .brand{font-size:.85rem}
+  footer a{color:var(--dim);text-decoration:none;font-size:.74rem;letter-spacing:.06em}
+  footer a:hover{color:var(--ice)}
+
+  /* reveal + draw */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.18s}.reveal.d3{transition-delay:.30s}.reveal.d4{transition-delay:.42s}
+  .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2s ease forwards}
+  .draw.d{animation-delay:.9s}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  @media (max-width:840px){
+    .pledge-grid,.price-2{grid-template-columns:1fr;gap:30px}
+    .deck,.steps{grid-template-columns:1fr}
+    .telem{grid-template-columns:repeat(2,1fr)}
+    .telem div:nth-child(2){border-right:0}
+    .telem div:nth-child(1),.telem div:nth-child(2){border-bottom:1px solid var(--line)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .draw{stroke-dashoffset:0;animation:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">NAOMETER <b>/</b> MOBILITY</div>
+    <span class="nav-cta soon">Coming soon</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow reveal">Naometer Mobility · Season 2026–27</div>
+    <h1 class="reveal d1">The CO₂ of getting there —<br>measured, and returned to <span class="z">zero.</span></h1>
+    <p class="lead reveal d2">This winter, Naoki Nakamura races the World Cup across nine countries — seven in Europe, plus Sapporo (Japan) and Lake Placid (USA). The CO₂ from all that travel is measured and offset in full with carbon credits. Doing that together is what a Mobility Partner is — and in return, we put your name out into the world: on the van, in every-race social posts, and on the site.</p>
+
+    <div class="pledge-chip reveal d3">
+      <div class="big">This season's van <span>≈ 9 t-CO₂</span>, 100% offset</div>
+      <div class="meta">Measured → JCX credits purchased &amp; retired → certificate in your name</div>
+    </div>
+
+    <div class="cta-row reveal d3">
+      <span class="btn btn-soon">Become a partner — coming soon</span>
+      <a href="#pledge" class="btn btn-ghost">See how it works</a>
+    </div>
+
+    <!-- net-zero signature -->
+    <div class="balance reveal d4">
+      <svg viewBox="0 0 1000 172" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="40" y1="122" x2="960" y2="122" stroke="rgba(237,243,250,.16)" stroke-width="1" stroke-dasharray="4 6"/>
+        <path class="draw" d="M40,122 C220,120 360,62 520,42" fill="none" stroke="#d08a57" stroke-width="2.5"/>
+        <path class="draw d" d="M520,42 C680,62 820,120 960,122" fill="none" stroke="#a8cfe0" stroke-width="2.5"/>
+        <circle cx="520" cy="42" r="4" fill="#d08a57"/>
+        <circle cx="960" cy="122" r="5" fill="#a8cfe0"/>
+        <text x="296" y="88" fill="#d08a57" font-family="DM Sans,sans-serif" font-size="12.5" letter-spacing="1.5">EMISSIONS</text>
+        <text x="690" y="88" fill="#a8cfe0" font-family="DM Sans,sans-serif" font-size="12.5" letter-spacing="1.5">OFFSET</text>
+        <text x="906" y="114" fill="#a8cfe0" font-family="DM Sans,sans-serif" font-size="13">= 0</text>
+      </svg>
+      <div class="cap"><span>Measure what we <b>drive</b></span><span>Return it with <b>credits</b></span></div>
+    </div>
+
+    <div class="telem reveal d4">
+      <div><div class="v g">9<small>t</small></div><div class="k">This season's van CO₂</div></div>
+      <div><div class="v g">100<small>%</small></div><div class="k">Offset</div></div>
+      <div><div class="v">9<small>countries</small></div><div class="k">On the World Cup tour</div></div>
+      <div><div class="v">6<small>slots</small></div><div class="k">Partners only</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- THE PLEDGE -->
+<section class="band" id="pledge">
+  <div class="wrap pledge-grid">
+    <div>
+      <div class="eyebrow reveal">The Pledge</div>
+      <h2 class="title reveal">What we drive, we don't hide.<br>We measure it — and return all of it.</h2>
+      <p class="lead reveal">Over a year the van covers roughly 40,000 km across nine European countries — the winter World Cup, plus the summer Grand Prix (France, Poland, Romania). That's about nine tonnes of CO₂. We purchase and retire JCX carbon credits for the full measured amount, and hand you a certificate and report — in your company's name — showing exactly who offset how much.</p>
+      <p class="lead reveal" style="margin-top:15px;color:var(--steel);font-size:.82rem">This is an effort <em>working toward</em> carbon neutrality. We don't claim to have achieved it — we measure what we emit and offset all of it with credits, and prove that fact in numbers.</p>
+    </div>
+    <div class="flow reveal">
+      <div class="step"><span class="n">01</span><div><div class="t">Measure</div><div class="d">Log the distance driven and convert it to CO₂ (≈ 40,000 km ≈ 9 t).</div></div></div>
+      <div class="step"><span class="n">02</span><div><div class="t">Offset</div><div class="d">Purchase and retire JCX carbon credits for the full measured amount.</div></div></div>
+      <div class="step"><span class="n">03</span><div><div class="t">Certify</div><div class="d">At season's end, issue a retirement certificate and report in your name — ready for CSR reporting.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NAOMETER -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow reveal">Naometer · The Idea</div>
+    <h2 class="title reveal">Distance flown, distance driven — measured, and offset.</h2>
+    <p class="lead reveal">Naometer is a project that makes the CO₂ of Naoki Nakamura's activity visible — and takes responsibility for it. Mobility Partner is the division that covers travel. Not a one-off ad, but part of one consistent commitment.</p>
+
+    <div class="tree reveal">
+      <div class="root">NAOMETER <span class="em">— distance flown and distance driven, measured and offset</span></div>
+      <div class="branch"><span class="pipe">├</span><div><div class="b-t">Naometer Flight</div><div class="b-d">Offsets distance flown (1 m flown = ¥10). Responsibility for the sport itself.</div></div></div>
+      <div class="branch"><span class="pipe">└</span><div><div class="b-t">Naometer Mobility <span class="now">This slot</span></div><div class="b-d">Offsets travel, supported by partners. MoveLogger tallies car, train, even flights — automatically.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow reveal">What You Get</div>
+    <h2 class="title reveal">Carry the CO₂ with us. In return, we broadcast you to the world.</h2>
+
+    <div class="deck">
+      <div class="card lead-card reveal">
+        <span class="idx">01 — Offset</span>
+        <h3>Join the offset of real activity CO₂</h3>
+        <p>Offset CO₂ alongside Naoki, issued as a retirement certificate and report in your company's name. Join from a sustainability budget — not an ad spend.</p>
+        <span class="tag">JCX · certificate in your name</span>
+      </div>
+      <div class="card reveal d1">
+        <span class="idx">02 — Reach</span>
+        <h3>Every-race social, a van across Europe, and the site</h3>
+        <p>Your logo rides on every-race result posts to social (IG 21k+) — nine countries, ≈25 events, from Sapporo and Lake Placid too. Logo on both sides of the van (500 cm² each). Year-round on the personal site.</p>
+        <span class="tag">van 500 cm² × 2 sides / ≈25 posts</span>
+      </div>
+      <div class="card reveal d2">
+        <span class="idx">03 — Proof</span>
+        <h3>Per-race and end-of-season reports</h3>
+        <p>Distance driven, countries crossed, offset volume and exposure — by email after every race and at season's end. "Seen" and "offset", both in numbers.</p>
+        <span class="tag">report by mail</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow reveal">Vision</div>
+    <h2 class="title reveal">Starting with the van. In time, all of the travel.</h2>
+    <p class="lead reveal">The first step is the van (≈ 9 t). The legs to Sapporo and Lake Placid are by air, where the van can't go. As MoveLogger — which measures travel automatically — matures, we'll extend the same system to all of the travel, flights and trains included. This season's partners are founding members of "the journey to take Naoki Nakamura's travel to zero."</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px" class="reveal">
+      <div class="card"><span class="idx">Phase 1 — This season</span><h3>Offset 100% of the van</h3><p>≈ 9 t. Measured by odometer, offset in full via JCX. It starts now.</p></div>
+      <div class="card"><span class="idx" style="color:var(--steel)">Phase 2 — Next</span><h3>Extend to all travel</h3><p>MoveLogger auto-tallies van + flights (Sapporo, Lake Placid, …) + trains. Same vessel, larger scale.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section class="band" id="apply">
+  <div class="wrap price-2">
+    <div class="price-box reveal">
+      <div class="eyebrow" style="margin-bottom:20px">Mobility Partner</div>
+      <div class="amount mono">€250<span>/mo</span></div>
+      <div class="sub">6 invoices, October–March (€1,500 / season)</div>
+      <div class="slots" aria-hidden="true">
+        <div class="slot"></div><div class="slot"></div><div class="slot"></div>
+        <div class="slot"></div><div class="slot"></div><div class="slot open"></div>
+      </div>
+      <div class="slots-label">Premium slots · 6 only</div>
+      <span class="btn btn-soon" style="margin-top:26px;display:block;text-align:center">Coming soon</span>
+    </div>
+    <div class="reveal">
+      <div class="eyebrow">What's Included</div>
+      <h2 class="title" style="font-size:clamp(22px,3.2vw,32px)">One plan. Everything in it.</h2>
+      <ul class="incl">
+        <li><span class="ck">◎</span><span>Join the activity CO₂ offset + a retirement certificate in your name (JCX)</span></li>
+        <li><span class="ck">✓</span><span>Logo on both sides of the van (500 cm² each)</span></li>
+        <li><span class="ck">✓</span><span>Logo on every-race result posts to social (≈25 events / season)</span></li>
+        <li><span class="ck">✓</span><span>Year-round logo + link on the personal site</span></li>
+        <li><span class="ck">✓</span><span>Per-race and end-of-season impact + offset reports</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="band alt">
+  <div class="wrap">
+    <div class="eyebrow reveal">How · Three steps to start</div>
+    <h2 class="title reveal">Apply in five minutes. After that, nothing.</h2>
+    <div class="steps">
+      <div class="step-c reveal"><div class="n">1</div><h4>Apply</h4><p>Reserve a slot from this page. Billing starts in October — €250 × 6.</p></div>
+      <div class="step-c reveal d1"><div class="n">2</div><h4>Send your logo</h4><p>Upload the file once. We handle sizing and placement.</p></div>
+      <div class="step-c reveal d2"><div class="n">3</div><h4>Then it's automatic</h4><p>Placement, every-race posts, CO₂ offset, certificate — all automatic. You just receive the results.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <div class="wrap">
+    <div class="eyebrow reveal">Only a few slots left · 6 only</div>
+    <h2 class="reveal">Take this winter's travel to zero, together.</h2>
+    <p class="lead reveal">The van's nine tonnes across Europe — measured, and returned. Your name, on the certificate.</p>
+    <div class="cta-row reveal">
+      <span class="btn btn-soon">Become a partner — coming soon</span>
+    </div>
+    <p class="fine reveal">No category exclusivity: competing companies may appear side by side (each is a personal sponsor of Naoki Nakamura). This partnership is a personal initiative by Naoki Nakamura and is not an official partnership of any federation he competes for. Vehicle placement applies to "Naoki Nakamura's activity vehicle." Carbon offsetting covers the full measured driving emissions by purchasing and retiring JCX carbon credits — an effort working toward carbon neutrality; it does not guarantee or claim that neutrality has been achieved.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">NAOMETER MOBILITY <b>·</b> FLYINGLABORATORY</div>
+    <a href="https://www.youtube.com/@naokinakamura0919" target="_blank" rel="noopener">@naokinakamura0919 ↗</a>
+  </div>
+</footer>
+
+<script>
+  // scroll-reveal, matching the main site's behaviour
+  (function () {
+    const els = document.querySelectorAll('.reveal');
+    const revealAll = function () { els.forEach(function (e) { e.classList.add('in'); }); };
+    if (!('IntersectionObserver' in window)) { revealAll(); return; }
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+    // Safety net: content must never stay invisible. If the observer never fires
+    // (e.g. a zero-height viewport or an odd embed), reveal everything.
+    window.addEventListener('load', function () {
+      setTimeout(function () { if (!document.querySelector('.reveal.in')) revealAll(); }, 1200);
+    });
+  })();
+</script>
+</body>
+</html>
