@@ -66,6 +66,13 @@
     color: var(--dim); text-decoration: none; transition: color 0.3s;
   }
   .nav-links a:hover { color: var(--white); }
+  .nav-shop {
+    font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ice); text-decoration: none; white-space: nowrap;
+    border: 1px solid rgba(168,207,224,0.45); border-radius: 999px; padding: 8px 16px;
+    transition: color 0.3s, background 0.3s, border-color 0.3s;
+  }
+  .nav-shop:hover { color: var(--black); background: var(--ice); border-color: var(--ice); }
 
   /* HAMBURGER */
   .hamburger {
@@ -600,6 +607,7 @@
     <li><a href="#sponsors">Sponsors</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <a href="/shop/" class="nav-shop">Shop ↗</a>
   <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
     <span></span><span></span><span></span>
   </button>
@@ -612,6 +620,7 @@
   <a href="#projects" class="mobile-nav-link">Projects</a>
   <a href="#sponsors" class="mobile-nav-link">Sponsors</a>
   <a href="#contact" class="mobile-nav-link">Contact</a>
+  <a href="/shop/" class="mobile-nav-link">Shop ↗</a>
 </div>
 
 <!-- =============================================
@@ -834,6 +843,15 @@
       <div class="project-status">
         <span class="status-dot" style="background: #6bcf8a; box-shadow: 0 0 8px rgba(107,207,138,0.5);"></span>
         <a href="https://www.instagram.com/naokinakamura0919/" target="_blank" style="color: inherit; text-decoration: none;">Follow on Instagram ↗</a>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-tag">3D Print · Shop</div>
+      <div class="project-name">Ski Jumping<br>3D Parts</div>
+      <div class="project-desc">Custom parametric base plates and printed FIS equipment-control tool sets — configure the part, spin it in 3D, and order it printed. Built for jumpers who tune their own gear.</div>
+      <div class="project-status">
+        <span class="status-dot soon"></span>
+        <a href="/shop/" style="color: inherit; text-decoration: none;">Preview the shop ↗</a>
       </div>
     </div>
   </div>

@@ -1,0 +1,858 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>flyinglabo SHOP — ski jumping 3D parts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+  :root{
+    --ink:#0d1420;          /* deepest graphite */
+    --stage:#111a29;        /* 3D stage bg */
+    --stage-2:#0b1220;
+    --paper:#eef2f6;        /* control surface */
+    --paper-2:#e3e9f0;
+    --line:#c9d3de;
+    --muted:#5d6b7d;
+    --text:#0d1420;
+    --teal:#12d8c4;         /* signature: live / measure */
+    --teal-deep:#0a9e90;
+    --amber:#f2a53c;        /* second path: printed part */
+    --amber-deep:#c77c14;
+    --danger:#e5554e;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:"Inter",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:1160px;margin:0 auto;padding:20px}
+
+  /* ---- header ---- */
+  header{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;color:var(--paper);
+    padding:6px 4px 18px}
+  .brand{font-family:"Space Grotesk";font-weight:700;letter-spacing:.02em;font-size:18px}
+  .brand b{color:var(--teal)}
+  .eyebrow{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:#7f92a8}
+  .head-right{margin-left:auto;font-family:"IBM Plex Mono";font-size:11px;color:#7f92a8;
+    letter-spacing:.15em}
+  .head-right a{color:#7f92a8;text-decoration:none;transition:color .15s}
+  .head-right a:hover{color:var(--teal)}
+
+  /* ---- preview flag ---- */
+  .preview-flag{margin:0 0 14px;border-radius:12px;padding:11px 16px;font-family:"IBM Plex Mono";
+    font-size:12px;letter-spacing:.04em;line-height:1.65;display:flex;gap:12px;align-items:baseline;
+    flex-wrap:wrap;border:1px solid var(--amber);color:#f2c98a;
+    background:repeating-linear-gradient(45deg,rgba(242,165,60,.13),rgba(242,165,60,.13) 11px,
+      rgba(242,165,60,.05) 11px,rgba(242,165,60,.05) 22px)}
+  .preview-flag b{color:var(--amber);letter-spacing:.16em;white-space:nowrap}
+  .preview-flag span{color:#9fb2c6}
+
+  /* ---- shipping strip ---- */
+  .ship{margin:0 0 16px;border:1px dashed rgba(18,216,196,.55);border-radius:var(--radius);
+    padding:13px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+    background:rgba(18,216,196,.06)}
+  .ship .tag{font-family:"Space Grotesk";font-weight:700;font-size:15px;color:var(--teal);white-space:nowrap}
+  .ship .txt{flex:1;min-width:260px;font-family:"IBM Plex Mono";font-size:11.5px;color:#9fb2c6;
+    letter-spacing:.06em;line-height:1.7}
+
+  /* ---- hero stage ---- */
+  .stage-card{position:relative;border-radius:var(--radius);overflow:hidden;
+    background:radial-gradient(120% 120% at 70% 10%,var(--stage) 0%,var(--stage-2) 100%);
+    border:1px solid #1e2b3e;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+  #stage{display:block;width:100%;height:clamp(300px,52vh,520px);touch-action:none;cursor:grab}
+  #stage:active{cursor:grabbing}
+  #dimsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .dim-line{stroke:var(--teal);stroke-width:1.25;opacity:.9}
+  .dim-tick{stroke:var(--teal);stroke-width:1.25;opacity:.9}
+  .dim-chip{fill:#0b1220;stroke:var(--teal);stroke-width:1}
+  .dim-txt{font-family:"IBM Plex Mono";font-size:12px;fill:var(--teal);font-weight:500}
+  .stage-tag{position:absolute;left:16px;top:14px;font-family:"IBM Plex Mono";font-size:11px;
+    letter-spacing:.22em;color:#6f8399;text-transform:uppercase}
+  .stage-hint{position:absolute;right:14px;bottom:12px;font-family:"IBM Plex Mono";font-size:10.5px;
+    letter-spacing:.12em;color:#54687e}
+  .stage-title{position:absolute;left:16px;bottom:14px;color:var(--paper)}
+  .stage-title h1{font-family:"Space Grotesk";font-weight:600;margin:0;font-size:clamp(22px,3.4vw,34px);
+    letter-spacing:-.01em;line-height:1.02}
+  .stage-title span{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.2em;color:#7f96ad;
+    text-transform:uppercase}
+
+  /* ---- panels row ---- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 20px 22px}
+  .panel h2{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 18px;display:flex;align-items:center;gap:8px}
+  .panel h2::before{content:"";width:6px;height:6px;background:var(--teal);border-radius:50%}
+  .panel.fis h2::before{background:var(--amber)}
+
+  /* ---- controls ---- */
+  .ctrl{margin-bottom:22px}
+  .ctrl:last-child{margin-bottom:4px}
+  .ctrl-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .ctrl-label{font-family:"Space Grotesk";font-weight:600;font-size:15px}
+  .ctrl-sub{font-family:"IBM Plex Mono";font-size:11px;color:var(--muted)}
+  .val{font-family:"IBM Plex Mono";font-weight:600;font-size:20px;color:var(--ink)}
+  .val u{font-style:normal;font-size:12px;color:var(--muted);margin-left:2px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:99px;
+    background:linear-gradient(90deg,var(--teal) var(--f,50%),var(--paper-2) var(--f,50%));outline:none;margin:6px 0 4px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;border-radius:50%;
+    background:#fff;border:2px solid var(--teal-deep);box-shadow:0 2px 6px rgba(10,158,144,.4);cursor:pointer;transition:transform .08s}
+  input[type=range]::-webkit-slider-thumb:active{transform:scale(1.12)}
+  input[type=range]::-moz-range-thumb{height:20px;width:20px;border-radius:50%;background:#fff;
+    border:2px solid var(--teal-deep);cursor:pointer}
+  input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(18,216,196,.35)}
+  .range-scale{display:flex;justify-content:space-between;font-family:"IBM Plex Mono";font-size:10.5px;
+    color:var(--muted);margin-top:2px}
+  .locked{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;
+    background:var(--paper-2);border-radius:10px;margin-top:4px}
+  .locked .k{font-family:"Space Grotesk";font-weight:600;font-size:14px}
+  .locked .v{font-family:"IBM Plex Mono";font-size:13px;color:var(--muted)}
+  .lock-ico{font-size:11px;color:var(--muted);font-family:"IBM Plex Mono"}
+
+  /* ---- spec readout ---- */
+  .spec{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .cell{background:var(--paper-2);border-radius:10px;padding:12px 14px}
+  .cell .k{font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .cell .n{font-family:"IBM Plex Mono";font-weight:600;font-size:19px;margin-top:3px}
+  .cell .n u{font-style:normal;font-size:11px;color:var(--muted);margin-left:2px}
+
+  /* ---- buy ---- */
+  .buy{display:grid;gap:10px}
+  .opt{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;background:#fff}
+  .opt.hot{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber),0 6px 18px -8px rgba(242,165,60,.5);
+    position:relative}
+  .opt.hot::after{content:"BEST VALUE";position:absolute;top:-9px;right:14px;background:var(--amber);
+    color:#3a2504;font-family:"IBM Plex Mono";font-size:9px;font-weight:600;letter-spacing:.18em;
+    padding:2px 8px;border-radius:99px}
+  .opt .price{font-family:"Space Grotesk";font-weight:700;font-size:26px;line-height:1;white-space:nowrap}
+  .opt .price.price-soon{font-size:17px;color:var(--muted);letter-spacing:.04em}
+  .opt .price u{font-style:normal;font-size:12px;color:var(--muted);display:block;font-family:"IBM Plex Mono";
+    font-weight:500;margin-top:4px;letter-spacing:.04em}
+  .opt .desc{flex:1}
+  .opt .desc b{font-family:"Space Grotesk";font-size:15px;display:block}
+  .opt .desc small{color:var(--muted);font-size:12.5px}
+  .btn{border:none;border-radius:10px;padding:11px 16px;font-family:"Space Grotesk";font-weight:600;
+    font-size:14px;cursor:pointer;white-space:nowrap;transition:transform .07s,filter .15s}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:3px solid rgba(18,216,196,.4);outline-offset:2px}
+  .btn-teal{background:var(--teal-deep);color:#04201d}
+  .btn-teal:hover{filter:brightness(1.08)}
+  .btn-amber{background:var(--amber);color:#3a2504}
+  .btn-amber:hover{filter:brightness(1.05)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{background:var(--paper-2)}
+  .dl-row{margin-top:6px}
+  .dl-row .btn{width:100%}
+  .note{font-family:"IBM Plex Mono";font-size:10.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+
+  /* ---- FIS tools section ---- */
+  .fis-row{margin-top:16px}
+  .badge{display:inline-block;font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;background:rgba(242,165,60,.14);color:var(--amber-deep);
+    border:1px solid rgba(242,165,60,.6);border-radius:99px;padding:4px 12px;margin-bottom:10px}
+  .fis-lede{font-size:14px;color:var(--muted);margin:0 0 16px;max-width:640px}
+  .fis-lede b{color:var(--ink)}
+  .tools{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:13.5px}
+  .tools th{font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-weight:500}
+  .tools td{padding:9px 10px;border-bottom:1px solid var(--paper-2);vertical-align:top}
+  .tools td.name{font-family:"Space Grotesk";font-weight:600;font-size:14px}
+  .tools td.num{font-family:"IBM Plex Mono"}
+  .tools tr.hl td{background:rgba(242,165,60,.08)}
+  .tools tr.grp td{font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--amber-deep);padding:14px 10px 6px;border-bottom:1px solid var(--line)}
+  .tools small{color:var(--muted);display:block}
+  .disclaimer{margin-top:14px;font-family:"IBM Plex Mono";font-size:11px;line-height:1.7;color:#8a6a3a;
+    background:rgba(242,165,60,.09);border:1px solid rgba(242,165,60,.4);border-radius:10px;padding:11px 14px}
+  .disclaimer b{color:var(--amber-deep)}
+  .fis-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}
+  @media(max-width:820px){.fis-grid{grid-template-columns:1fr}}
+  .tools td.doc{white-space:nowrap}
+  .tools a.pdf{font-family:"IBM Plex Mono";font-size:11px;color:var(--amber-deep);text-decoration:none;
+    border:1px solid rgba(242,165,60,.55);border-radius:99px;padding:3px 9px;transition:background .15s}
+  .tools a.pdf:hover{background:rgba(242,165,60,.14)}
+  .tools a.pdf.todo{color:var(--muted);border-color:var(--line)}
+
+  /* ---- FIS 3D viewer ---- */
+  .fis-stage-card{margin-bottom:16px}
+  #fisStage{display:block;width:100%;height:clamp(280px,44vh,440px);touch-action:none;cursor:grab;
+    background:transparent}
+  #fisStage:active{cursor:grabbing}
+  .fis-tabs{position:absolute;left:14px;top:44px;display:flex;flex-wrap:wrap;gap:6px;max-width:78%}
+  .fis-tabs button{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.04em;color:#9fb2c6;
+    background:rgba(11,18,32,.72);border:1px solid #24354c;border-radius:99px;padding:6px 12px;
+    cursor:pointer;transition:all .12s;backdrop-filter:blur(2px)}
+  .fis-tabs button:hover{border-color:var(--amber);color:#dfe9f5}
+  .fis-tabs button.on{background:var(--amber);border-color:var(--amber);color:#3a2504;font-weight:600}
+  .fis-load{position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    font-family:"IBM Plex Mono";font-size:12px;letter-spacing:.14em;color:#7f96ad;
+    background:rgba(11,18,32,.35);pointer-events:none;text-align:center;padding:0 24px}
+  .fis-load.on{display:flex}
+  .fis-pdf-link{position:absolute;right:14px;bottom:38px;font-family:"IBM Plex Mono";font-size:11px;
+    letter-spacing:.06em;color:var(--amber);text-decoration:none;background:rgba(11,18,32,.72);
+    border:1px solid rgba(242,165,60,.55);border-radius:99px;padding:6px 12px;backdrop-filter:blur(2px)}
+  .fis-pdf-link:hover{background:rgba(242,165,60,.16)}
+
+  /* ---- small screens: keep stage overlays from colliding with the big title ---- */
+  @media(max-width:560px){
+    .stage-hint{display:none}
+    .fis-pdf-link{display:none!important}
+    .fis-tabs{max-width:100%}
+  }
+
+  /* ---- footer ---- */
+  footer{color:#6f8399;font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.1em;
+    text-align:center;padding:26px 0 10px}
+  footer b{color:var(--teal)}
+
+  /* ---- modal ---- */
+  .modal-bg{position:fixed;inset:0;background:rgba(6,10,18,.66);display:none;align-items:center;
+    justify-content:center;padding:20px;z-index:50;backdrop-filter:blur(3px)}
+  .modal-bg.on{display:flex}
+  .modal{background:var(--paper);border-radius:16px;max-width:420px;width:100%;padding:26px;
+    border:1px solid var(--line);box-shadow:0 40px 80px -20px rgba(0,0,0,.6)}
+  .modal h3{font-family:"Space Grotesk";margin:0 0 6px;font-size:20px}
+  .modal p{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+  .modal .spec-mini{font-family:"IBM Plex Mono";font-size:12px;background:var(--paper-2);
+    border-radius:10px;padding:12px 14px;margin-bottom:10px;line-height:1.8}
+  .modal .spec-mini b{color:var(--ink)}
+  .modal .ship-mini{font-family:"IBM Plex Mono";font-size:11px;color:var(--muted);margin-bottom:16px}
+  .modal-close{width:100%}
+  /* ---- PDF modal ---- */
+  .pdf-modal{max-width:820px}
+  .pdf-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px}
+  .pdf-head h3{margin:0}
+  .pdf-head .btn{padding:8px 14px;font-size:13px}
+  .pdf-modal iframe{width:100%;height:min(68vh,640px);border:1px solid var(--line);border-radius:10px;
+    background:#fff;margin:8px 0 14px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">flyinglabo · ski jumping parts</div>
+      <div class="brand">空飛ぶ<b>SHOP</b> — 3D printed &amp; data</div>
+    </div>
+    <div class="head-right"><a href="/">← naokinakamura.site</a></div>
+  </header>
+
+  <div class="preview-flag">
+    <b>🚧 PREVIEW</b>
+    <span>準備中のプレビューです。まだ販売していません（FISの許可を申請中）。 · <b style="color:#9fb2c6">Not yet for sale</b> — showcase only, ordering opens after FIS approval.</span>
+  </div>
+
+  <div class="ship">
+    <div class="tag">🚚 SHIPPING €15 FLAT / ORDER</div>
+    <div class="txt">Combine anything — plates, tool sets, singles. Shipping is charged <b>once per order</b>, worldwide, tracked. STL downloads ship nothing, cost nothing.</div>
+  </div>
+
+  <div class="stage-card">
+    <canvas id="stage"></canvas>
+    <svg id="dimsvg"></svg>
+    <div class="stage-tag">live preview · drag to orbit</div>
+    <div class="stage-hint">drag rotate · scroll / pinch zoom</div>
+    <div class="stage-title">
+      <span>parametric ramp plate</span>
+      <h1>Build your plate.</h1>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- controls -->
+    <section class="panel">
+      <h2>Dimensions</h2>
+
+      <div class="ctrl">
+        <div class="ctrl-top">
+          <div><div class="ctrl-label">Length</div><div class="ctrl-sub">100 – 250 mm</div></div>
+          <div class="val"><span id="lenOut">195</span><u>mm</u></div>
+        </div>
+        <input id="len" type="range" min="100" max="250" step="1" value="195">
+        <div class="range-scale"><span>100</span><span>175</span><span>250</span></div>
+      </div>
+
+      <div class="ctrl">
+        <div class="ctrl-top">
+          <div><div class="ctrl-label">Height</div><div class="ctrl-sub">thick end · max 15 mm</div></div>
+          <div class="val"><span id="hgtOut">14</span><u>mm</u></div>
+        </div>
+        <input id="hgt" type="range" min="2" max="15" step="0.5" value="14">
+        <div class="range-scale"><span>2</span><span>8.5</span><span>15</span></div>
+      </div>
+
+      <div class="locked">
+        <div><div class="k">Width</div><div class="v">fixed profile</div></div>
+        <div class="lock-ico">🔒 90 mm</div>
+      </div>
+      <div class="locked" style="margin-top:8px">
+        <div><div class="k">Thin edge</div><div class="v">tapered end</div></div>
+        <div class="lock-ico">🔒 1 mm</div>
+      </div>
+    </section>
+
+    <!-- spec + buy -->
+    <section class="panel">
+      <h2>Your plate</h2>
+      <div class="spec">
+        <div class="cell"><div class="k">Footprint</div><div class="n"><span id="foot">195 × 90</span><u>mm</u></div></div>
+        <div class="cell"><div class="k">Profile</div><div class="n"><span id="prof">14 → 1</span><u>mm</u></div></div>
+        <div class="cell"><div class="k">Volume</div><div class="n"><span id="vol">106.7</span><u>cm³</u></div></div>
+        <div class="cell"><div class="k">PLA weight</div><div class="n"><span id="wt">132</span><u>g</u></div></div>
+      </div>
+
+      <div class="buy">
+        <div class="opt">
+          <div class="price">€1<u>data</u></div>
+          <div class="desc"><b>Custom 3D model</b><small>Download the STL, print it yourself.</small></div>
+          <button class="btn btn-teal" id="buyData">Get STL</button>
+        </div>
+        <div class="opt">
+          <div class="price">€5<u>/ plate</u></div>
+          <div class="desc"><b>Printed — single</b><small>One plate, printed in PLA to your spec.</small></div>
+          <button class="btn btn-amber" id="buyPrint">Order 1</button>
+        </div>
+        <div class="opt">
+          <div class="price">€10<u>/ pair</u></div>
+          <div class="desc"><b>Printed — pair</b><small>Two plates, same spec. One for each ski.</small></div>
+          <button class="btn btn-amber" id="buyPair">Order pair</button>
+        </div>
+        <div class="dl-row">
+          <button class="btn btn-ghost" id="dlBtn">↓ Download preview STL (free)</button>
+        </div>
+      </div>
+      <div class="note">Preview STL is watermarked at low resolution. The paid €1 file is the clean,
+      print-ready mesh. Checkout is a demo here — wire it to Stripe to go live.</div>
+    </section>
+  </div>
+
+  <!-- FIS tools -->
+  <div class="fis-row">
+    <div class="stage-card fis-stage-card">
+      <canvas id="fisStage"></canvas>
+      <div class="stage-tag">fis tools · drag to orbit</div>
+      <div class="fis-tabs" id="fisTabs">
+        <button data-key="tol" class="on">TOL axis</button>
+        <button data-key="toa">TOA axis</button>
+        <button data-key="sleeve">Sleeve Mount</button>
+        <button data-key="leg">Leg Mount</button>
+        <button data-key="tangle">T-angle Arm</button>
+        <button data-key="rear">Rear Template</button>
+        <button data-key="strap">Strap Clip</button>
+        <button data-key="crotch">Crotch Template</button>
+        <button data-key="zipper">Zipper Clamp</button>
+      </div>
+      <div class="fis-load" id="fisLoad">loading…</div>
+      <a class="fis-pdf-link" id="fisPdf" href="#" target="_blank" rel="noopener">↓ parts &amp; hardware (PDF)</a>
+      <div class="stage-title">
+        <span>equipment control · real mesh</span>
+        <h1 id="fisTitle">TOL axis</h1>
+      </div>
+    </div>
+
+    <section class="panel fis">
+      <h2>FIS equipment control tools</h2>
+      <div class="fis-grid">
+        <div>
+          <span class="badge">printed &amp; shipped · official FIS data · 2026/27</span>
+          <p class="fis-lede">The FIS-published DIY equipment-control tool files, <b>printed in rigid PLA and
+          shipped ready to use</b>. What you're buying is the printing: machine time, dimensional checks,
+          and one box with everything in it. <b>Prefer to print it yourself?</b> The raw 3D files are
+          published free by FIS — <a href="#" id="fisDiyLink" target="_blank" rel="noopener" style="color:var(--teal-deep);font-weight:600">download them from the FIS server</a> and print at home.</p>
+
+          <table class="tools">
+            <tr><th>Tool</th><th>Parts</th><th>Footprint</th><th>Hardware</th></tr>
+            <tr class="hl"><td class="name">TOL axis <small>V04</small></td><td class="num">2</td><td class="num">396 mm bar + 101 mm top <small>· also sold alone</small></td><td class="doc"><a class="pdf todo" data-doc="tol" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">Sleeve Mount</td><td class="num">2</td><td class="num">180 × 83 mm</td><td class="doc"><a class="pdf todo" data-doc="sleeve" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">Leg Mount</td><td class="num">3</td><td class="num">82 × 76 × 36 mm</td><td class="doc"><a class="pdf todo" data-doc="leg" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">T-angle Arm</td><td class="num">1</td><td class="num">185 × 150 mm</td><td class="doc"><a class="pdf todo" data-doc="tangle" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">Rear Cut-Out Template</td><td class="num">1</td><td class="num">150 × 100 mm</td><td class="doc"><a class="pdf todo" data-doc="rear" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr class="grp"><td colspan="4">New for 2026/27</td></tr>
+            <tr><td class="name">TOA axis</td><td class="num">2</td><td class="num">243 mm bar + closure</td><td class="doc"><a class="pdf todo" data-doc="toa" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">Strap Clip <small>S / M / L</small></td><td class="num">2 (pair)</td><td class="num">56 × 72 mm</td><td class="doc"><a class="pdf todo" data-doc="strap" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">Crotch Template</td><td class="num">1</td><td class="num">80 × 180 mm</td><td class="doc"><a class="pdf todo" data-doc="crotch" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">Zipper Clamp</td><td class="num">2</td><td class="num">40 × 80 mm</td><td class="doc"><a class="pdf todo" data-doc="zipper" href="#" target="_blank" rel="noopener">PDF ↗</a></td></tr>
+            <tr><td class="name">Digital measuring tape</td><td class="num">—</td><td class="num">commercial <small>· not printed</small></td><td class="doc"><a class="pdf todo" data-doc="tape" href="#" target="_blank" rel="noopener">Flyer ↗</a></td></tr>
+          </table>
+          <div class="note" style="margin-top:-6px">Each <b>Hardware</b> link opens the official FIS DIY manual right here in the page — it lists the
+          screws &amp; inserts you buy yourself (e.g. TOL needs 4× RAMPA knock-in inserts + 4× M5×8 Torx countersunk screws) with purchase links.
+          T-angle Arm, Rear Template, Strap Clip &amp; Crotch Template are simple parts with no extra hardware. The digital measuring tape is a
+          commercial device (Sigma) — flyer only, not printed here.</div>
+
+          <div class="disclaimer">⚠︎ These are the FIS equipment-control tools as published for the <b>2026/27 season (as of July 2026)</b>.
+          FIS may revise the equipment rules at any time — a tool can become non-compliant after a rule update. Always check the current
+          FIS rules before use; we update the models when FIS publishes new versions.</div>
+        </div>
+
+        <div>
+          <div class="buy">
+            <div class="opt hot">
+              <div class="price price-soon">TBA<u>pricing soon</u></div>
+              <div class="desc"><b>Complete FIS tool set</b><small>The 5 core tools: TOL axis (V04), Sleeve, Leg, T-angle &amp; Rear.</small></div>
+              <button class="btn btn-amber" id="buySet">Notify me</button>
+            </div>
+            <div class="opt">
+              <div class="price price-soon">TBA<u>pricing soon</u></div>
+              <div class="desc"><b>TOL axis (V04) — single tool</b><small>2 parts (Basis + Top). The big one, on its own.</small></div>
+              <button class="btn btn-amber" id="buyTol">Notify me</button>
+            </div>
+          </div>
+          <div class="note">Printed at high infill for measuring rigidity. FIS DIY assembly manuals
+          are included as a QR link in the box. No STL sales here — the data is freely published by FIS;
+          we charge for printing &amp; handling only. <b>Pricing is being finalised — ordering opens after FIS approval.</b></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>FLYINGLABORATORY · <b>空飛ぶCEO</b> · custom parts on demand · shipping €15 flat per order</footer>
+</div>
+
+<!-- PDF modal -->
+<div class="modal-bg" id="pdfModal">
+  <div class="modal pdf-modal">
+    <div class="pdf-head">
+      <h3 id="pdfTitle">Parts &amp; hardware</h3>
+      <a id="pdfOpen" class="btn btn-ghost" href="#" target="_blank" rel="noopener">Open ↗</a>
+    </div>
+    <p>Official FIS DIY manual — the 3D parts plus the screws / inserts you buy yourself, with purchase links.</p>
+    <iframe id="pdfFrame" title="FIS DIY manual" src="about:blank"></iframe>
+    <button class="btn btn-teal modal-close" id="pdfClose">Close</button>
+  </div>
+</div>
+
+<!-- modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="mTitle">Checkout</h3>
+    <p id="mDesc">This is where Stripe checkout opens.</p>
+    <div class="spec-mini" id="mSpec"></div>
+    <div class="ship-mini">+ €15 flat shipping per order (charged once, combine freely) · not applied to STL downloads</div>
+    <button class="btn btn-teal modal-close" id="mClose">Close</button>
+  </div>
+</div>
+
+<script>
+/* ---------- part geometry (mm, Z-up for STL / Y-up for scene) ---------- */
+const W = 90;        // fixed width
+const TMIN = 1;      // thin edge
+function state(){ return { L:+len.value, H:+hgt.value }; }
+
+/* vertices for a wedge, Z-up (used for STL). length X, width Y, height Z */
+function wedgeVerts(L,H){
+  return {
+    b:[[0,0,0],[L,0,0],[L,W,0],[0,W,0]],           // bottom
+    t:[[0,0,H],[L,0,TMIN],[L,W,TMIN],[0,W,H]]      // top (slope H->TMIN along X)
+  };
+}
+/* 12 triangles referencing 8 pts [b0..3, t0..3] */
+const TRI = [
+  [4,5,6],[4,6,7],        // top
+  [0,2,1],[0,3,2],        // bottom
+  [0,1,5],[0,5,4],        // front  (y=0)
+  [3,6,2],[3,7,6],        // back   (y=W)
+  [0,4,7],[0,7,3],        // thick end (x=0)
+  [1,2,6],[1,6,5]         // thin end (x=L)
+];
+
+/* ---------- three.js scene ---------- */
+const canvas = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(38,1,1,4000);
+
+// lights
+scene.add(new THREE.HemisphereLight(0xdfe9f5,0x14202f,1.05));
+const key = new THREE.DirectionalLight(0xffffff,1.25); key.position.set(-160,240,180); scene.add(key);
+const rim = new THREE.DirectionalLight(0x12d8c4,.5); rim.position.set(200,60,-160); scene.add(rim);
+
+// ground grid
+const grid = new THREE.GridHelper(600,30,0x2a3a52,0x1c2a3e);
+grid.position.y=0; scene.add(grid);
+
+// mesh + edges
+let mesh, edges;
+const faceMat = new THREE.MeshStandardMaterial({color:0xd7dee7,metalness:.15,roughness:.62,
+  flatShading:true});
+const edgeMat = new THREE.LineBasicMaterial({color:0x12d8c4});
+
+function buildGeom(){
+  const {L,H}=state();
+  const v=wedgeVerts(L,H); const P=[...v.b,...v.t];
+  // center on X/Z (scene: X len, Y up=height, Z=width)
+  const g=new THREE.BufferGeometry();
+  const pos=[];
+  for(const tri of TRI){ for(const idx of tri){
+    const p=P[idx];                 // [x(len), y(width), z(height)]
+    pos.push(p[0]-L/2, p[2], p[1]-W/2);   // scene: X=len centered, Y=height, Z=width centered
+  }}
+  g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  g.computeVertexNormals();
+  return g;
+}
+function rebuild(){
+  const g=buildGeom();
+  if(mesh){ scene.remove(mesh); scene.remove(edges); mesh.geometry.dispose(); }
+  mesh=new THREE.Mesh(g,faceMat); scene.add(mesh);
+  edges=new THREE.LineSegments(new THREE.EdgesGeometry(g,25),edgeMat); scene.add(edges);
+}
+
+/* ---------- hand-rolled orbit ---------- */
+let az=-0.9, pol=1.02, rad=340, target=new THREE.Vector3(0,7,0);
+function applyCam(){
+  const {H}=state(); target.y=H*0.45;
+  cam.position.set(
+    target.x+rad*Math.sin(pol)*Math.sin(az),
+    target.y+rad*Math.cos(pol),
+    target.z+rad*Math.sin(pol)*Math.cos(az));
+  cam.lookAt(target);
+}
+let drag=false,px=0,py=0;
+canvas.addEventListener('pointerdown',e=>{drag=true;px=e.clientX;py=e.clientY;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{ if(!drag)return;
+  az-=(e.clientX-px)*0.008; pol=Math.max(0.18,Math.min(1.5,pol-(e.clientY-py)*0.006));
+  px=e.clientX;py=e.clientY;});
+canvas.addEventListener('pointerup',()=>drag=false);
+canvas.addEventListener('pointercancel',()=>drag=false);
+canvas.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(150,Math.min(700,rad+e.deltaY*0.4));},{passive:false});
+// pinch
+let pinchD=0;
+canvas.addEventListener('touchmove',e=>{ if(e.touches.length===2){
+  const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+  const d=Math.hypot(dx,dy); if(pinchD)rad=Math.max(150,Math.min(700,rad+(pinchD-d)*0.9)); pinchD=d; e.preventDefault();}
+},{passive:false});
+canvas.addEventListener('touchend',()=>pinchD=0);
+
+/* ---------- dimension overlay (SVG) ---------- */
+const svg=document.getElementById('dimsvg');
+const SVGNS='http://www.w3.org/2000/svg';
+function el(t,a){const n=document.createElementNS(SVGNS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
+function project(v3){
+  const v=v3.clone().project(cam);
+  return {x:(v.x*0.5+0.5)*canvas.clientWidth, y:(-v.y*0.5+0.5)*canvas.clientHeight, z:v.z};
+}
+function dim(a,b,label){
+  const A=project(a),B=project(b);
+  const g=el('g',{});
+  g.appendChild(el('line',{class:'dim-line',x1:A.x,y1:A.y,x2:B.x,y2:B.y}));
+  // ticks perpendicular
+  const dx=B.x-A.x,dy=B.y-A.y,len=Math.hypot(dx,dy)||1;const nx=-dy/len*5,ny=dx/len*5;
+  g.appendChild(el('line',{class:'dim-tick',x1:A.x-nx,y1:A.y-ny,x2:A.x+nx,y2:A.y+ny}));
+  g.appendChild(el('line',{class:'dim-tick',x1:B.x-nx,y1:B.y-ny,x2:B.x+nx,y2:B.y+ny}));
+  // label chip at midpoint, nudged perpendicular
+  const mx=(A.x+B.x)/2-dy/len*16, my=(A.y+B.y)/2+dx/len*16;
+  const w=label.length*7.4+12;
+  g.appendChild(el('rect',{class:'dim-chip',x:mx-w/2,y:my-11,width:w,height:20,rx:5}));
+  const tx=el('text',{class:'dim-txt',x:mx,y:my+4,'text-anchor':'middle'});tx.textContent=label;
+  g.appendChild(tx);
+  svg.appendChild(g);
+}
+function drawDims(){
+  svg.innerHTML='';
+  const {L,H}=state();
+  const hx=L/2, hz=W/2;
+  // Length: front-bottom edge
+  dim(new THREE.Vector3(-hx,0,hz), new THREE.Vector3(hx,0,hz), L.toFixed(0)+' mm');
+  // Height: thick end vertical
+  dim(new THREE.Vector3(-hx,0,hz), new THREE.Vector3(-hx,H,hz), H.toFixed(H%1?1:0)+' mm');
+  // Width: bottom side edge at thin end
+  dim(new THREE.Vector3(hx,0,-hz), new THREE.Vector3(hx,0,hz), W+' mm');
+}
+
+/* ---------- readouts ---------- */
+function fmt(n,d=0){return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function updateReadout(){
+  const {L,H}=state();
+  lenOut.textContent=L; hgtOut.textContent=(H%1?H.toFixed(1):H);
+  foot.textContent=L+' × '+W;
+  prof.textContent=(H%1?H.toFixed(1):H)+' → '+TMIN;
+  const volMm=L*W*(H+TMIN)/2;      // trapezoidal wedge
+  const volCm=volMm/1000;
+  vol.textContent=fmt(volCm,1);
+  wt.textContent=fmt(volCm*1.24,0); // PLA ~1.24 g/cm3
+  // slider fill
+  len.style.setProperty('--f',((L-100)/150*100)+'%');
+  hgt.style.setProperty('--f',((H-2)/13*100)+'%');
+}
+
+/* ---------- resize + loop ---------- */
+function resize(){
+  const w=canvas.clientWidth,h=canvas.clientHeight;
+  if(canvas.width!==w*devicePixelRatio||canvas.height!==h*devicePixelRatio){
+    renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix();
+    svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  }
+}
+function loop(){ resize(); applyCam(); renderer.render(scene,cam); drawDims(); requestAnimationFrame(loop); }
+
+/* ---------- STL export ---------- */
+function buildSTL(){
+  const {L,H}=state(); const v=wedgeVerts(L,H); const P=[...v.b,...v.t];
+  let s='solid FlyingLabo_BasePlate\n';
+  for(const tri of TRI){
+    const [a,b,c]=tri.map(i=>P[i]);
+    const u=[b[0]-a[0],b[1]-a[1],b[2]-a[2]], w=[c[0]-a[0],c[1]-a[1],c[2]-a[2]];
+    let n=[u[1]*w[2]-u[2]*w[1], u[2]*w[0]-u[0]*w[2], u[0]*w[1]-u[1]*w[0]];
+    const m=Math.hypot(...n)||1; n=n.map(x=>x/m);
+    s+=`facet normal ${n[0]} ${n[1]} ${n[2]}\n outer loop\n`;
+    for(const p of [a,b,c]) s+=`  vertex ${p[0]} ${p[1]} ${p[2]}\n`;
+    s+=' endloop\nendfacet\n';
+  }
+  return s+'endsolid FlyingLabo_BasePlate\n';
+}
+function download(){
+  const {L,H}=state();
+  const blob=new Blob([buildSTL()],{type:'model/stl'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`FlyingLabo_BasePlate_L${L}_H${(H+'').replace('.','-')}.stl`;
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+/* ---------- modal ---------- */
+const modal=document.getElementById('modal');
+function plateSpec(){
+  const {L,H}=state(); const volCm=L*W*(H+TMIN)/2/1000;
+  return `Length &nbsp;<b>${L} mm</b><br>Height &nbsp;<b>${H} mm</b> → 1 mm<br>Width &nbsp;<b>90 mm</b><br>PLA weight &nbsp;<b>${fmt(volCm*1.24,0)} g</b>`;
+}
+function openModal(title,desc,specHTML){
+  mTitle.textContent=title; mDesc.textContent=desc;
+  mSpec.innerHTML=specHTML;
+  modal.classList.add('on');
+}
+mClose.onclick=()=>modal.classList.remove('on');
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove('on');};
+buyData.onclick=()=>{ download(); openModal('€1 · Custom 3D model',
+  'Your print-ready STL is downloading. In the live version this is a €1 Stripe checkout — the clean file unlocks after payment.', plateSpec()); };
+buyPrint.onclick=()=>openModal('€5 · Printed plate — single',
+  'One plate printed in PLA to your spec. In the live version this opens Stripe checkout with your dimensions attached.', plateSpec());
+buyPair.onclick=()=>openModal('€10 · Printed plates — pair',
+  'Two plates, same spec, one for each ski. In the live version this opens Stripe checkout with your dimensions attached.', plateSpec());
+buySet.onclick=()=>openModal('€39 · Complete FIS tool set',
+  'The five core FIS equipment-control tools, printed and boxed. In the live version this opens Stripe checkout.',
+  `TOL axis (V04) &nbsp;<b>2 parts</b><br>Sleeve Mount &nbsp;<b>2 parts</b><br>Leg Mount &nbsp;<b>3 parts</b><br>T-angle Arm &nbsp;<b>1 part</b><br>Rear Cut-Out Template &nbsp;<b>1 part</b>`);
+buyTol.onclick=()=>openModal('€15 · TOL axis (V04) only',
+  'The TOL axis tool on its own, printed and shipped. In the live version this opens Stripe checkout.',
+  `TOL axis (V04) &nbsp;<b>2 parts</b> (Basis + Top)<br>Basis bar &nbsp;<b>396 mm</b><br>Rigid PLA, high infill`);
+dlBtn.onclick=download;
+
+/* ---------- init ---------- */
+[len,hgt].forEach(s=>s.addEventListener('input',()=>{rebuild();updateReadout();}));
+rebuild(); updateReadout(); loop();
+
+/* ================= FIS TOOLS · real-mesh 3D viewer ================= */
+/* Bundled FIS "DIY Manual" PDFs (parts + screws/inserts + buy links).
+   Blank = no separate manual for that tool (single-part templates, no extra hardware). */
+/* Public FIS download page (raw 3D files for DIY self-printing). Paste the real FIS URL here. */
+const FIS_DIY_URL = 'https://www.fis-ski.com/';
+const FIS_DOCS = {
+  tol:    '/shop/fis_models/manual_tol.pdf',
+  sleeve: '/shop/fis_models/manual_sleeve.pdf',
+  leg:    '/shop/fis_models/manual_leg.pdf',
+  tangle: '',   // T-angle Arm — single part, no hardware manual
+  rear:   '',   // Rear Cut-Out Template — single part, no hardware manual
+  toa:    '/shop/fis_models/manual_toa.pdf',
+  strap:  '',   // Strap Clip — no separate manual
+  crotch: '',   // Crotch Template — single part, no manual
+  zipper: '/shop/fis_models/manual_zipper.pdf',
+  tape:   '/shop/fis_models/flyer_measuringtape.pdf'   // commercial device flyer
+};
+const FIS_TOOLS = {
+  tol:    { title:'TOL axis (V04)',        parts:['tol_basis','tol_top'] },
+  toa:    { title:'TOA axis',              parts:['toa_basis','toa_closure'] },
+  sleeve: { title:'Sleeve Mount',          parts:['sleeve_left','sleeve_right'] },
+  leg:    { title:'Leg Mount',             parts:['leg_base','leg_cover','leg_spacer'] },
+  tangle: { title:'T-angle Arm',           parts:['tangle_arm'] },
+  rear:   { title:'Rear Cut-Out Template', parts:['rear_template'] },
+  strap:  { title:'Strap Clip (medium)',   parts:['strapclip_l','strapclip_r'] },
+  crotch: { title:'Crotch Template',       parts:['crotch_template'] },
+  zipper: { title:'Zipper Clamp',          parts:['zipper_basis','zipper_closure'] }
+};
+
+/* ---- STL parser (binary + ASCII) → flat position array ---- */
+function parseSTL(buf){
+  const dv=new DataView(buf);
+  const n=buf.byteLength>=84 ? dv.getUint32(80,true) : 0;
+  const isBinary = buf.byteLength>84 && (84+n*50)===buf.byteLength;
+  if(isBinary){
+    const pos=new Float32Array(n*9); let o=84,k=0;
+    for(let i=0;i<n;i++){
+      o+=12;                                   // skip face normal
+      for(let v=0;v<3;v++){
+        pos[k++]=dv.getFloat32(o,true);
+        pos[k++]=dv.getFloat32(o+4,true);
+        pos[k++]=dv.getFloat32(o+8,true);
+        o+=12;
+      }
+      o+=2;                                    // attribute byte count
+    }
+    return pos;
+  }
+  // ASCII
+  const txt=new TextDecoder().decode(new Uint8Array(buf));
+  const re=/vertex\s+([-\d.eE+]+)\s+([-\d.eE+]+)\s+([-\d.eE+]+)/g;
+  const pos=[]; let m;
+  while((m=re.exec(txt))) pos.push(+m[1],+m[2],+m[3]);
+  return pos;
+}
+
+/* ---- scene ---- */
+const fcanvas=document.getElementById('fisStage');
+const frenderer=new THREE.WebGLRenderer({canvas:fcanvas,antialias:true,alpha:true});
+frenderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const fscene=new THREE.Scene();
+const fcam=new THREE.PerspectiveCamera(40,1,1,20000);
+fscene.add(new THREE.HemisphereLight(0xdfe9f5,0x14202f,1.05));
+const fkey=new THREE.DirectionalLight(0xffffff,1.25); fkey.position.set(-160,240,180); fscene.add(fkey);
+const frim=new THREE.DirectionalLight(0x12d8c4,.55); frim.position.set(200,60,-160); fscene.add(frim);
+let fgrid=new THREE.GridHelper(400,20,0x2a3a52,0x1c2a3e); fscene.add(fgrid);
+const fmat=new THREE.MeshStandardMaterial({color:0xd7dee7,metalness:.15,roughness:.6,flatShading:false});
+let fgroup=null;
+
+/* ---- orbit ---- */
+let faz=-0.9, fpol=1.0, frad=400, fradMin=120, fradMax=2000, ftarget=new THREE.Vector3();
+function fApplyCam(){
+  fcam.position.set(
+    ftarget.x+frad*Math.sin(fpol)*Math.sin(faz),
+    ftarget.y+frad*Math.cos(fpol),
+    ftarget.z+frad*Math.sin(fpol)*Math.cos(faz));
+  fcam.lookAt(ftarget);
+}
+let fdrag=false,fpx=0,fpy=0;
+fcanvas.addEventListener('pointerdown',e=>{fdrag=true;fpx=e.clientX;fpy=e.clientY;fcanvas.setPointerCapture(e.pointerId);});
+fcanvas.addEventListener('pointermove',e=>{ if(!fdrag)return;
+  faz-=(e.clientX-fpx)*0.008; fpol=Math.max(0.15,Math.min(1.55,fpol-(e.clientY-fpy)*0.006));
+  fpx=e.clientX;fpy=e.clientY;});
+fcanvas.addEventListener('pointerup',()=>fdrag=false);
+fcanvas.addEventListener('pointercancel',()=>fdrag=false);
+fcanvas.addEventListener('wheel',e=>{e.preventDefault();frad=Math.max(fradMin,Math.min(fradMax,frad+e.deltaY*0.5));},{passive:false});
+let fpinch=0;
+fcanvas.addEventListener('touchmove',e=>{ if(e.touches.length===2){
+  const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+  const d=Math.hypot(dx,dy); if(fpinch)frad=Math.max(fradMin,Math.min(fradMax,frad+(fpinch-d)*1.1)); fpinch=d; e.preventDefault();}
+},{passive:false});
+fcanvas.addEventListener('touchend',()=>fpinch=0);
+
+/* ---- load + arrange a tool's parts ---- */
+async function loadGeom(name){
+  const res=await fetch('/shop/fis_models/'+name+'.stl');
+  if(!res.ok) throw new Error('missing '+name);
+  const pos=parseSTL(await res.arrayBuffer());
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  g.rotateX(-Math.PI/2);          // STL is Z-up → lay flat for Y-up scene
+  g.computeVertexNormals();
+  g.computeBoundingBox();
+  return g;
+}
+let fisReqId=0;
+async function showTool(key){
+  const id=++fisReqId;
+  const t=FIS_TOOLS[key]; if(!t) return;
+  fisTitle.textContent=t.title;
+  fisLoad.classList.add('on'); fisLoad.textContent='loading '+t.title+' …';
+  // tabs
+  document.querySelectorAll('#fisTabs button').forEach(b=>b.classList.toggle('on',b.dataset.key===key));
+  // pdf link (opens in-page modal)
+  const url=FIS_DOCS[key];
+  if(url){ fisPdf.style.display=''; fisPdf.dataset.key=key; } else { fisPdf.style.display='none'; }
+
+  let geos=[];
+  try{ for(const p of t.parts){ geos.push(await loadGeom(p)); } }
+  catch(err){
+    if(id!==fisReqId) return;
+    fisLoad.textContent='3D preview loads on the served/hosted site (needs http://, not file://).';
+    return;
+  }
+  if(id!==fisReqId) return;      // a newer tab was clicked while loading
+
+  if(fgroup){ fscene.remove(fgroup); fgroup.traverse(o=>{if(o.geometry)o.geometry.dispose();}); }
+  fgroup=new THREE.Group();
+  const sizes=geos.map(g=>{const s=new THREE.Vector3();g.boundingBox.getSize(s);return s;});
+  const gap=Math.max(...sizes.map(s=>Math.max(s.x,s.z)))*0.14;
+  const totalW=sizes.reduce((a,s)=>a+s.x,0)+gap*(geos.length-1);
+  let cursor=-totalW/2;
+  geos.forEach((g,i)=>{
+    const s=sizes[i], c=new THREE.Vector3(); g.boundingBox.getCenter(c);
+    const m=new THREE.Mesh(g,fmat);
+    m.position.set(cursor+s.x/2-c.x, -g.boundingBox.min.y, -c.z);
+    fgroup.add(m);
+    cursor+=s.x+gap;
+  });
+  fscene.add(fgroup);
+  // frame camera to group
+  const box=new THREE.Box3().setFromObject(fgroup), size=new THREE.Vector3(), ctr=new THREE.Vector3();
+  box.getSize(size); box.getCenter(ctr);
+  ftarget.copy(ctr);
+  const maxd=Math.max(size.x,size.y,size.z);
+  frad=maxd*1.7; fradMin=maxd*0.5; fradMax=maxd*5;
+  // resize grid to part scale
+  fscene.remove(fgrid);
+  const gs=Math.max(120,Math.ceil(Math.max(size.x,size.z)*1.6/50)*50);
+  fgrid=new THREE.GridHelper(gs,Math.round(gs/20),0x2a3a52,0x1c2a3e); fscene.add(fgrid);
+  fisLoad.classList.remove('on');
+}
+document.querySelectorAll('#fisTabs button').forEach(b=>b.addEventListener('click',()=>showTool(b.dataset.key)));
+
+/* ---- in-page PDF viewer modal ---- */
+const FIS_TITLES={tol:'TOL axis (V04)',toa:'TOA axis',sleeve:'Sleeve Mount',leg:'Leg Mount',
+  tangle:'T-angle Arm',rear:'Rear Cut-Out Template',strap:'Strap Clip',crotch:'Crotch Template',
+  zipper:'Zipper Clamp',tape:'Digital measuring tape'};
+const pdfModal=document.getElementById('pdfModal');
+function openPdf(key){
+  const url=FIS_DOCS[key]; if(!url) return;
+  pdfTitle.textContent=(FIS_TITLES[key]||'FIS tool')+(key==='tape'?' — info flyer':' — parts & hardware');
+  pdfOpen.href=url; pdfFrame.src=url;
+  pdfModal.classList.add('on');
+}
+function closePdf(){ pdfModal.classList.remove('on'); pdfFrame.src='about:blank'; }
+pdfClose.onclick=closePdf;
+pdfModal.onclick=e=>{ if(e.target===pdfModal) closePdf(); };
+fisPdf.addEventListener('click',e=>{e.preventDefault();openPdf(fisPdf.dataset.key);});
+
+/* ---- wire the table hardware links (keep each link's own label: "PDF ↗" / "Flyer ↗") ---- */
+document.querySelectorAll('.tools a.pdf').forEach(a=>{
+  const key=a.dataset.doc, url=FIS_DOCS[key];
+  if(url){ a.classList.remove('todo'); a.href=url;
+    a.addEventListener('click',e=>{e.preventDefault();openPdf(key);}); }
+  else{ a.removeAttribute('href'); a.textContent='—'; a.title='No extra hardware';
+    a.style.border='none'; a.style.pointerEvents='none'; a.style.color='var(--muted)'; }
+});
+/* ---- DIY: link to the free FIS file download ---- */
+{ const dl=document.getElementById('fisDiyLink'); if(dl) dl.href=FIS_DIY_URL; }
+
+/* ---- resize + loop ---- */
+function fResize(){
+  const w=fcanvas.clientWidth,h=fcanvas.clientHeight;
+  if(fcanvas.width!==w*devicePixelRatio||fcanvas.height!==h*devicePixelRatio){
+    frenderer.setSize(w,h,false); fcam.aspect=w/h; fcam.updateProjectionMatrix();
+  }
+}
+function fLoop(){ fResize(); fApplyCam(); frenderer.render(fscene,fcam); requestAnimationFrame(fLoop); }
+fLoop(); showTool('tol');
+
+/* ================= PREVIEW MODE ================= */
+/* Not selling yet (pending FIS approval). Flip to false to open the shop. */
+const PREVIEW = true;
+function comingSoon(){
+  mTitle.textContent='🚧 Coming soon';
+  mDesc.textContent='This is a preview — ordering isn’t open yet. I’m waiting on FIS approval before selling the tool sets. Meanwhile, play with the plate configurator and spin the 3D models freely.';
+  mSpec.style.display='none';
+  const sm=document.querySelector('#modal .ship-mini'); if(sm) sm.style.display='none';
+  modal.classList.add('on');
+}
+if(PREVIEW){
+  [buyData,buyPrint,buyPair,buySet,buyTol,dlBtn].forEach(b=>{ if(b) b.onclick=comingSoon; });
+}
+</script>

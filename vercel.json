@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/mobility", "destination": "/mobility.html" },
     { "source": "/news", "destination": "/news-archive.html" },
-    { "source": "/news/:id", "destination": "/news.html" }
+    { "source": "/news/:id", "destination": "/news.html" },
+    { "source": "/shop", "destination": "/shop/index.html" }
   ]
 }
