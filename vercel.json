@@ -1,6 +1,9 @@
 {
   "rewrites": [
     { "source": "/mobility", "destination": "/mobility.html" },
+    { "source": "/mobility-partner", "destination": "/mobility-partner.html" },
+    { "source": "/mobility-partner/apply", "destination": "/mobility-partner.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/news", "destination": "/news-archive.html" },
     { "source": "/news/:id", "destination": "/news.html" },
     { "source": "/shop", "destination": "/shop/index.html" }

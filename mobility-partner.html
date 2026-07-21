@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<!-- Naometer Mobility Partner — standalone product page (EN) -->
+<!-- Shares the naokinakamura.site design language (black · DM Sans / Bebas Neue / Cormorant) -->
+<!-- but carries its own moss-green accent so it reads as a separate product. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naometer Mobility Partner — Your brand on a van across 15 countries</title>
+<meta name="description" content="Put your brand on Naoki Nakamura's activity van as it crosses 15 countries on the FIS World Cup circuit. €1,500 / season, 6 slots, all driving CO₂ offset — with a named carbon-offset certificate for your ESG reporting.">
+<meta property="og:title" content="Naometer Mobility Partner — Your brand on a van across 15 countries">
+<meta property="og:description" content="Sustainability-driven sponsorship: €1,500 / season, only 6 slots. Logo on the van, every-race social features, and a named carbon-offset certificate.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/images/hero_action.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/fonts/main.css">
+
+<style>
+  :root{
+    --black:#050608; --panel:rgba(255,255,255,.02); --panel-2:rgba(255,255,255,.035);
+    --white:#f0ede8; --dim:#8a8a8a; --steel:#6f7782;
+    --ice:#a8cfe0;
+    /* product accent — moss green marks Mobility Partner as its own product */
+    --moss:#a9d8a4; --moss-deep:#7fb37c; --moss-soft:rgba(169,216,164,.32);
+    --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.16);
+    --dm:"DM Sans",system-ui,sans-serif;
+    --bebas:"Bebas Neue",sans-serif;
+    --cormorant:"Cormorant Garamond",Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--dm);font-weight:300;background:var(--black);color:var(--white);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+  section{position:relative}
+  a{color:inherit}
+
+  .eyebrow{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--moss);display:flex;align-items:center;gap:13px;font-weight:400}
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.7}
+  h2.title{font-family:var(--cormorant);font-weight:500;font-size:clamp(26px,4.4vw,44px);line-height:1.2;margin:18px 0 16px}
+  .lead{color:var(--dim);font-size:clamp(15px,1.7vw,17px);max-width:62ch;font-weight:300}
+  .mono{font-variant-numeric:tabular-nums}
+
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:linear-gradient(to bottom,rgba(5,6,8,.92),rgba(5,6,8,.7));border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .brand{font-family:var(--bebas);font-size:1.1rem;letter-spacing:.16em;color:var(--white);text-decoration:none;white-space:nowrap}
+  .brand b{color:var(--moss);font-weight:400}
+  .nav-side{display:flex;align-items:center;gap:22px}
+  .nav-back{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .3s}
+  .nav-back:hover{color:var(--white)}
+  .nav-cta{font-weight:500;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--black);background:var(--moss);padding:10px 18px;border-radius:999px;text-decoration:none;transition:.2s;white-space:nowrap}
+  .nav-cta:hover{background:#c3e5bf;transform:translateY(-1px)}
+
+  /* hero */
+  .hero{padding:clamp(64px,11vh,116px) 0 66px;overflow:hidden;background:radial-gradient(110% 120% at 85% -10%,rgba(169,216,164,.09),transparent 55%)}
+  .hero h1{font-family:var(--cormorant);font-weight:500;font-size:clamp(34px,6.2vw,66px);line-height:1.12;margin:22px 0 24px;text-wrap:balance}
+  .hero h1 .z{font-style:italic;color:var(--moss)}
+  .hero .lead{font-size:clamp(16px,2vw,19px);max-width:56ch}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:32px}
+  .btn{font-weight:500;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:15px 30px;border-radius:999px;transition:.2s;display:inline-block;border:0;cursor:pointer;font-family:var(--dm)}
+  .btn-primary{background:var(--moss);color:var(--black)}
+  .btn-primary:hover{background:#c3e5bf;transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--white);border:1px solid var(--line-strong)}
+  .btn-ghost:hover{border-color:var(--moss);color:var(--moss);transform:translateY(-2px)}
+
+  .hero-stats{margin-top:46px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel)}
+  .hero-stats div{padding:20px 18px;border-right:1px solid var(--line)}
+  .hero-stats div:last-child{border-right:0}
+  .hero-stats .v{font-family:var(--bebas);font-size:clamp(26px,3vw,38px);line-height:1;color:var(--white)}
+  .hero-stats .v.g{color:var(--moss)}
+  .hero-stats .v small{font-family:var(--dm);font-weight:400;font-size:.34em;margin-left:3px;color:var(--steel);letter-spacing:.04em}
+  .hero-stats .k{font-size:.72rem;color:var(--steel);margin-top:9px;letter-spacing:.04em}
+
+  .band{padding:84px 0;border-top:1px solid var(--line)}
+  .band.alt{background:rgba(255,255,255,.014)}
+
+  /* price + value stack, side by side */
+  .price-2{display:grid;grid-template-columns:.95fr 1.05fr;gap:46px;align-items:start}
+  .price-box{border:1px solid var(--moss-soft);border-radius:8px;padding:36px;background:linear-gradient(180deg,rgba(169,216,164,.1),transparent);position:sticky;top:88px}
+  .price-box .amount{font-family:var(--bebas);font-size:clamp(46px,6.6vw,64px);line-height:.95;letter-spacing:.01em}
+  .price-box .amount span{color:var(--moss);font-size:.42em}
+  .price-box .sub{color:var(--dim);font-size:.85rem;margin-top:14px}
+  .slots{display:flex;gap:8px;margin:26px 0 8px}
+  .slot{flex:1;height:9px;border-radius:2px;background:var(--moss)}
+  .slot.open{background:transparent;border:1px dashed var(--line-strong)}
+  .slots-label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
+  .slots-label b{color:var(--moss);font-weight:500}
+  .price-note{font-size:.74rem;color:var(--steel);margin-top:18px;line-height:1.7}
+  .incl{list-style:none}
+  .incl li{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--line);font-size:.93rem;color:var(--white);font-weight:300}
+  .incl li:last-child{border-bottom:0}
+  .incl .ck{flex:0 0 auto;color:var(--moss);font-weight:500}
+  .incl small{display:block;color:var(--steel);font-size:.78rem;margin-top:2px}
+
+  /* how it works */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px}
+  .step-c{padding:26px 24px;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+  .step-c .n{font-family:var(--bebas);font-size:2.1rem;line-height:1;color:var(--moss)}
+  .step-c h4{font-family:var(--cormorant);font-weight:600;font-size:1.22rem;margin:12px 0 8px;color:var(--white)}
+  .step-c p{font-size:.84rem;color:var(--dim)}
+  .how-note{margin-top:26px;padding:16px 22px;border:1px solid var(--line);border-left:2px solid var(--moss);border-radius:4px;font-size:.85rem;color:var(--dim);max-width:70ch}
+  .how-note b{color:var(--white);font-weight:500}
+
+  /* form */
+  .form-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:start;margin-top:38px}
+  form{border:1px solid var(--line);border-radius:8px;padding:34px;background:var(--panel)}
+  .field{margin-bottom:22px}
+  .field label{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);margin-bottom:8px}
+  .field label .req{color:var(--moss)}
+  .field input[type=text],.field input[type=email],.field textarea{
+    width:100%;background:rgba(255,255,255,.03);border:1px solid var(--line-strong);border-radius:4px;
+    color:var(--white);font-family:var(--dm);font-weight:300;font-size:.95rem;padding:13px 15px;transition:border-color .2s;outline:none}
+  .field input:focus,.field textarea:focus{border-color:var(--moss)}
+  .field textarea{min-height:88px;resize:vertical}
+  .field input[type=file]{width:100%;color:var(--dim);font-size:.84rem;padding:12px 0}
+  .field input[type=file]::file-selector-button{
+    font-family:var(--dm);font-weight:500;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--moss);background:transparent;border:1px solid var(--moss-soft);border-radius:999px;
+    padding:9px 16px;margin-right:14px;cursor:pointer;transition:.2s}
+  .field input[type=file]::file-selector-button:hover{background:var(--moss);color:var(--black)}
+  .field .hint{font-size:.74rem;color:var(--steel);margin-top:6px}
+  .plan-fixed{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid var(--moss-soft);border-radius:4px;padding:15px 18px;background:linear-gradient(180deg,rgba(169,216,164,.07),transparent)}
+  .plan-fixed .p-name{font-weight:500;font-size:.92rem}
+  .plan-fixed .p-name small{display:block;font-weight:300;color:var(--steel);font-size:.76rem}
+  .plan-fixed .p-price{font-family:var(--bebas);font-size:1.5rem;color:var(--moss);white-space:nowrap}
+  .form-error{display:none;margin:0 0 20px;padding:13px 16px;border:1px solid rgba(224,138,138,.5);border-radius:4px;color:#e0a8a8;font-size:.85rem}
+  .form-error.show{display:block}
+  .form-fine{font-size:.72rem;color:var(--steel);margin-top:18px;line-height:1.7}
+
+  .success{display:none;border:1px solid var(--moss-soft);border-radius:8px;padding:44px 36px;background:linear-gradient(180deg,rgba(169,216,164,.08),transparent);text-align:center}
+  .success.show{display:block}
+  .success .mark{font-family:var(--bebas);font-size:2.6rem;color:var(--moss);line-height:1}
+  .success h3{font-family:var(--cormorant);font-weight:600;font-size:1.7rem;margin:14px 0 10px}
+  .success p{color:var(--dim);font-size:.92rem;max-width:44ch;margin:0 auto}
+
+  .aside-card{border:1px solid var(--line);border-radius:6px;padding:26px;background:var(--panel);margin-bottom:20px}
+  .aside-card h4{font-family:var(--cormorant);font-weight:600;font-size:1.2rem;margin-bottom:8px}
+  .aside-card p{font-size:.84rem;color:var(--dim)}
+
+  .fine{margin:60px auto 0;font-size:.72rem;color:var(--steel);max-width:76ch;line-height:1.8;text-align:center}
+
+  footer{border-top:1px solid var(--line);padding:32px 0}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  footer .brand{font-size:.85rem}
+  footer a{color:var(--dim);text-decoration:none;font-size:.74rem;letter-spacing:.06em}
+  footer a:hover{color:var(--moss)}
+
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.18s}.reveal.d3{transition-delay:.30s}
+
+  @media (max-width:840px){
+    .price-2,.form-grid{grid-template-columns:1fr;gap:30px}
+    .price-box{position:static}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .hero-stats{grid-template-columns:repeat(2,1fr)}
+    .hero-stats div:nth-child(2){border-right:0}
+    .hero-stats div:nth-child(1),.hero-stats div:nth-child(2){border-bottom:1px solid var(--line)}
+    .nav-back{display:none}
+  }
+  @media (max-width:560px){
+    .steps{grid-template-columns:1fr}
+    nav .wrap{padding:0 20px}
+    nav .brand{font-size:.8rem;letter-spacing:.08em;white-space:normal;line-height:1.3;flex:1 1 auto;min-width:0;max-width:180px}
+    .nav-cta{font-size:.64rem;padding:9px 13px}
+    .nav-side{gap:0;flex:0 0 auto}
+    footer .brand{white-space:normal;line-height:1.5}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="/mobility-partner">NAOMETER <b>/</b> MOBILITY PARTNER</a>
+    <div class="nav-side">
+      <a class="nav-back" href="/">← naokinakamura.site</a>
+      <a class="nav-cta" href="#apply">Apply for a slot</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow reveal">Naometer Mobility Partner · Season 2026–27</div>
+    <h1 class="reveal d1">Put your brand on a van racing across <span class="z">15 countries</span> on the FIS World Cup circuit.</h1>
+    <p class="lead reveal d2">A sustainability-driven sponsorship. Your logo travels on Naoki Nakamura's activity vehicle the whole season — and every kilometre it drives is measured and its CO₂ offset, with a named certificate you can use in your own ESG reporting.</p>
+    <div class="cta-row reveal d3">
+      <a href="#apply" class="btn btn-primary">Apply for a slot</a>
+      <a href="#price" class="btn btn-ghost">See what's included</a>
+    </div>
+
+    <div class="hero-stats reveal d3">
+      <div><div class="v">15<small>countries</small></div><div class="k">On the World Cup circuit</div></div>
+      <div><div class="v">~25<small>events</small></div><div class="k">Social features / season</div></div>
+      <div><div class="v g">100<small>%</small></div><div class="k">Driving CO₂ offset via JCX</div></div>
+      <div><div class="v g mono" id="stat-slots">6<small>slots</small></div><div class="k">Only — first come, first served</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- PRICE + VALUE STACK -->
+<section class="band" id="price">
+  <div class="wrap">
+    <div class="eyebrow reveal">One plan · One price</div>
+    <h2 class="title reveal">€1,500 a season. Everything below is in it.</h2>
+
+    <div class="price-2" style="margin-top:36px">
+      <div class="price-box reveal">
+        <div class="eyebrow" style="margin-bottom:20px">Season plan</div>
+        <div class="amount mono">€1,500<span>/season</span></div>
+        <div class="sub">Excl. VAT. The equivalent of €250 / month × 6. Invoiced once — paid by SEPA bank transfer, no card required.</div>
+        <div class="slots" id="slots-bar" aria-hidden="true"></div>
+        <div class="slots-label" id="slots-label">Only 6 slots</div>
+        <a href="#apply" class="btn btn-primary" style="margin-top:28px;display:block;text-align:center">Apply for a slot</a>
+        <div class="price-note">Offer addressed to businesses only. Contracting party: Naoki Nakamura SP (Slovenia). You'll receive a standard EU invoice for your records.</div>
+      </div>
+
+      <div class="reveal d1">
+        <div class="eyebrow">What you get</div>
+        <ul class="incl" style="margin-top:18px">
+          <li><span class="ck">✓</span><span>Logo on both sides of the activity van<small>500 cm² per side, professionally applied</small></span></li>
+          <li><span class="ck">✓</span><span>Featured in social posts at every competition<small>~25 events per season across the World Cup circuit</small></span></li>
+          <li><span class="ck">✓</span><span>Permanent listing on the website<small>Logo + link for the full season</small></span></li>
+          <li><span class="ck">✓</span><span>Inclusion in the quarterly Flying Report<small>Email after every race, plus the year-end edition</small></span></li>
+          <li><span class="ck">◎</span><span>All driving CO₂ retired via JCX → a <b>named carbon-offset certificate</b><small>Issued in your company's name — usable for your ESG / IR reporting</small></span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="band alt" id="how">
+  <div class="wrap">
+    <div class="eyebrow reveal">How it works</div>
+    <h2 class="title reveal">Apply today. On the van from the season opener.</h2>
+    <div class="steps">
+      <div class="step-c reveal"><div class="n">1</div><h4>Apply</h4><p>Fill in the form below — takes about two minutes. Upload your logo (SVG or PNG) right in the application.</p></div>
+      <div class="step-c reveal d1"><div class="n">2</div><h4>We send your invoice</h4><p>Within 2 business days you'll receive an invoice from Naoki Nakamura SP (Slovenia) by email.</p></div>
+      <div class="step-c reveal d2"><div class="n">3</div><h4>Pay by bank transfer</h4><p>Settle the invoice by SEPA bank transfer — the standard way European businesses pay each other.</p></div>
+      <div class="step-c reveal d3"><div class="n">4</div><h4>Your logo rides</h4><p>Your logo goes on the van from the season opener, and the every-race features begin.</p></div>
+    </div>
+    <div class="how-note reveal"><b>No card checkout, no instant payment.</b> This is an invoiced B2B partnership: you apply, we invoice, you transfer. Your finance team will thank you.</div>
+  </div>
+</section>
+
+<!-- APPLICATION FORM -->
+<section class="band" id="apply">
+  <div class="wrap">
+    <div class="eyebrow reveal">Apply</div>
+    <h2 class="title reveal">Reserve your slot</h2>
+    <p class="lead reveal">No payment now — submitting this form starts the invoice process, nothing more.</p>
+
+    <div class="form-grid">
+      <div class="reveal">
+        <form id="apply-form" novalidate>
+          <div class="form-error" id="form-error" role="alert"></div>
+
+          <div class="field">
+            <label for="f-company">Company name <span class="req">*</span></label>
+            <input type="text" id="f-company" name="company" required autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="f-vat">VAT ID</label>
+            <input type="text" id="f-vat" name="vatId" placeholder="e.g. SI12345678 — leave blank if not applicable" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="f-address">Billing address <span class="req">*</span></label>
+            <textarea id="f-address" name="billingAddress" required autocomplete="street-address"></textarea>
+          </div>
+          <div class="field">
+            <label for="f-contact">Contact person <span class="req">*</span></label>
+            <input type="text" id="f-contact" name="contactPerson" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-email">Email <span class="req">*</span></label>
+            <input type="email" id="f-email" name="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="f-logo">Logo file (SVG / PNG)</label>
+            <input type="file" id="f-logo" name="logo" accept=".svg,.png,image/svg+xml,image/png">
+            <div class="hint">Max 2 MB. You can also send it later by email if it's not at hand.</div>
+          </div>
+
+          <div class="field">
+            <label>Plan</label>
+            <div class="plan-fixed">
+              <div class="p-name">Season<small>All benefits included · invoiced, SEPA transfer · excl. VAT</small></div>
+              <div class="p-price mono">€1,500</div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submit-btn" style="width:100%">Apply for a slot</button>
+          <p class="form-fine">This offer is addressed to businesses only. By submitting, you confirm you're acting on behalf of a business. Your details are used only to prepare your invoice and partnership materials — see our <a href="/privacy">Privacy Notice</a>. No payment is taken through this site.</p>
+        </form>
+
+        <div class="success" id="success" role="status">
+          <div class="mark">✓</div>
+          <h3>Thanks — we'll email your invoice within 2 business days.</h3>
+          <p>Watch your inbox for an invoice from Naoki Nakamura SP. Once it's settled by bank transfer, your logo is booked onto the van for the 2026–27 season.</p>
+        </div>
+      </div>
+
+      <div class="reveal d1">
+        <div class="aside-card">
+          <h4>Who you're partnering with</h4>
+          <p>Naoki Nakamura is a Japanese professional ski jumper competing on the FIS World Cup circuit. The van is Naoki Nakamura's activity vehicle — the one that actually carries him and his equipment across Europe all winter.</p>
+        </div>
+        <div class="aside-card">
+          <h4>The sustainability part</h4>
+          <p>Every kilometre the van drives is logged and its CO₂ offset by purchasing and retiring JCX carbon credits. You receive a carbon-offset certificate issued in your company's name — evidence you can attach to ESG or IR reporting.</p>
+        </div>
+        <div class="aside-card">
+          <h4>Good to know</h4>
+          <p>No category exclusivity — competing companies may appear side by side. Each partner is a personal sponsor of Naoki Nakamura; this is not an official partnership of any federation or team.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="fine">Mobility Partner is a personal initiative of Naoki Nakamura and is not an official partnership of any federation he competes for. Vehicle placement applies to Naoki Nakamura's activity vehicle. We measure the van's driving emissions and offset them in full by purchasing and retiring JCX carbon credits — we offset the driving emissions; we do not claim carbon neutrality has been achieved. This offer is addressed to businesses only; all prices are exclusive of VAT. Contracting party: Naoki Nakamura SP, Slovenia (registration in progress — registered address, registration number and VAT ID will be published here upon registration, expected September 2026). Contact: <a href="mailto:big.skijump.naoki@gmail.com">big.skijump.naoki@gmail.com</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">NAOMETER MOBILITY PARTNER <b>·</b> FLYINGLABORATORY</div>
+    <div style="display:flex;gap:20px;align-items:center">
+      <a href="/privacy">Privacy Notice</a>
+      <a href="https://www.youtube.com/@naokinakamura0919" target="_blank" rel="noopener">@naokinakamura0919 ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // scroll-reveal, matching the main site's behaviour
+  (function () {
+    const els = document.querySelectorAll('.reveal');
+    const revealAll = function () { els.forEach(function (e) { e.classList.add('in'); }); };
+    if (!('IntersectionObserver' in window)) { revealAll(); return; }
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+    window.addEventListener('load', function () {
+      setTimeout(function () { if (!document.querySelector('.reveal.in')) revealAll(); }, 1200);
+    });
+  })();
+
+  // slot availability from /data/mobility.json — edit remainingSlots there, never here
+  (function () {
+    const bar = document.getElementById('slots-bar');
+    const label = document.getElementById('slots-label');
+    const stat = document.getElementById('stat-slots');
+
+    function render(total, remaining) {
+      bar.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const el = document.createElement('div');
+        el.className = 'slot' + (i < total - remaining ? '' : ' open');
+        bar.appendChild(el);
+      }
+      if (remaining <= 0) {
+        label.innerHTML = 'Only ' + total + ' slots · <b>fully booked — applications join the waitlist</b>';
+      } else {
+        label.innerHTML = 'Only ' + total + ' slots · <b>' + remaining + ' remaining</b>';
+      }
+      stat.innerHTML = remaining + '<small>of ' + total + ' slots</small>';
+    }
+
+    fetch('/data/mobility.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        render(d.totalSlots || 6, Math.max(0, Math.min(d.remainingSlots, d.totalSlots || 6)));
+      })
+      .catch(function () { render(6, 6); });
+  })();
+
+  // application form → /api/mobility-apply (server forwards to the n8n webhook)
+  (function () {
+    const form = document.getElementById('apply-form');
+    const errBox = document.getElementById('form-error');
+    const btn = document.getElementById('submit-btn');
+    const success = document.getElementById('success');
+
+    function showError(msg) {
+      errBox.textContent = msg;
+      errBox.classList.add('show');
+      errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function readLogo(file) {
+      return new Promise(function (resolve, reject) {
+        if (!file) { resolve(null); return; }
+        const okType = /\.(svg|png)$/i.test(file.name) ||
+          file.type === 'image/svg+xml' || file.type === 'image/png';
+        if (!okType) { reject(new Error('Logo must be an SVG or PNG file.')); return; }
+        if (file.size > 2 * 1024 * 1024) { reject(new Error('Logo file is too large (max 2 MB).')); return; }
+        const reader = new FileReader();
+        reader.onload = function () { resolve({ filename: file.name, data: reader.result }); };
+        reader.onerror = function () { reject(new Error('Could not read the logo file. Please try again.')); };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errBox.classList.remove('show');
+
+      const company = document.getElementById('f-company').value.trim();
+      const vatId = document.getElementById('f-vat').value.trim();
+      const billingAddress = document.getElementById('f-address').value.trim();
+      const contactPerson = document.getElementById('f-contact').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+
+      if (!company || !billingAddress || !contactPerson || !email) {
+        showError('Please fill in all required fields.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('Please enter a valid email address.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      readLogo(document.getElementById('f-logo').files[0])
+        .then(function (logo) {
+          return fetch('/api/mobility-apply', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              company: company, vatId: vatId, billingAddress: billingAddress,
+              contactPerson: contactPerson, email: email, logo: logo,
+            }),
+          });
+        })
+        .then(function (res) {
+          if (!res.ok) {
+            return res.json().catch(function () { return {}; }).then(function (d) {
+              throw new Error(d.error || 'Something went wrong. Please try again.');
+            });
+          }
+          form.style.display = 'none';
+          success.classList.add('show');
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        })
+        .catch(function (err) {
+          showError(err.message || 'Something went wrong. Please try again.');
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.textContent = 'Apply for a slot';
+        });
+    });
+  })();
+</script>
+</body>
+</html>
